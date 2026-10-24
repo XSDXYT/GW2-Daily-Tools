@@ -7,19 +7,21 @@
   <meta name="description" content="激战2每日团队悬赏完整12天轮换表，包含4组Boss、实际Boss名称与副本名。" data-i18n-content="descriptionRotation">
   <title data-i18n="rotationTitle">12天循环表 · GW2 Raid Bounties</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.css?v=3">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4">
+  <link rel="stylesheet" href="assets/css/share.css?v=4">
   <script defer src="assets/js/data.js"></script>
   <script defer src="assets/js/rotation.js"></script>
-  <script defer src="assets/js/encounters-zh.js?v=3"></script>
-  <script defer src="assets/js/i18n.js?v=3"></script>
-  <script defer src="assets/js/app.js?v=3"></script>
+  <script defer src="assets/js/encounters-zh.js?v=4"></script>
+  <script defer src="assets/js/i18n.js?v=4"></script>
+  <script defer src="assets/js/share-image.js?v=4"></script>
+  <script defer src="assets/js/app.js?v=4"></script>
 </head>
 <body data-page="rotation">
   <a class="skip-link" href="#main-content"><span data-i18n="skip">跳转到主要内容</span></a>
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="返回GW2日常十人本首页" data-i18n-aria-label="homeAria">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="m20 3 15 9v16l-15 9L5 28V12Z" stroke="currentColor"/></path><path d="m12 27 5-14 3 6 3-6 5 14-8-5Z" fill="currentColor"/></path><path d="m20 6 2 4-2 3-2-3Z" fill="currentColor"/></path></svg></span>
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="m20 3 15 9v16l-15 9L5 28V12Z" stroke="currentColor"/><path d="m12 27 5-14 3 6 3-6 5 14-8-5Z" fill="currentColor"/><path d="m20 6 2 4-2 3-2-3Z" fill="currentColor"/></svg></span>
         <span class="brand-copy"><strong>GW2 <span>RAID</span></strong><small><span data-i18n="tagline">泰瑞亚 · 每日悬赏指南</span></small></span>
       </a>
       <nav class="nav" aria-label="主导航" data-i18n-aria-label="nav">
@@ -43,7 +45,7 @@
       <section class="section" aria-label="完整每日悬赏表" data-i18n-aria-label="tableAria">
         <div class="section-heading table-heading">
           <div><p class="section-kicker"><span data-i18n="allDays">ALL 12 DAYS</span></p><h2><span data-i18n="overview">每日悬赏总览</span></h2></div>
-          <button class="secondary-button" type="button" id="jump-today"><span data-i18n="jump">定位今天</span> <span aria-hidden="true">↓</span></button>
+          <div class="rotation-actions"><button id="share-cycle" class="secondary-button" type="button" data-i18n="shareCycle">整表截图分享</button><button class="secondary-button" type="button" id="jump-today"><span data-i18n="jump">定位今天</span> <span aria-hidden="true">↓</span></button></div>
         </div>
         <div class="legend"><span><i class="legend-mark" aria-hidden="true"></i> <span data-i18n="currentDay">今天</span></span><span><span data-i18n="legend">每格：Boss 名称 / 所属副本 / 悬赏任务</span></span></div>
         <div class="table-scroll" role="region" aria-label="12天循环表，可横向滚动" tabindex="0" data-i18n-aria-label="scrollTable">
@@ -57,7 +59,7 @@
       </section>
 
       <section class="bottom-link" aria-label="返回首页" data-i18n-aria-label="backAria">
-        <div><p class="section-kicker"><span data-i18n="backKicker">BACK TO TODAY</span></p><h2><span data-i18n="backHeading">先看看今天打什么？</span></h2><p><span data-i18n="backHint">首页为你整理好当天4个 Boss 和未来7天的安排。</span></p></div>
+        <div><p class="section-kicker"><span data-i18n="backKicker">BACK TO TODAY</span></p><h2><span data-i18n="backHeading">先看看今天打什么？</span></h2><p><span data-i18n="backHint">查看当天或指定日期的四个 Boss，复制文字或生成分享图片。</span></p></div>
         <a class="text-action" href="index.html"><span data-i18n="backLink">返回今日日常</span> <span aria-hidden="true">↗</span></a>
       </section>
     </main>
@@ -67,5 +69,12 @@
       <div><span data-i18n="sourceLabel">数据参考</span> <a href="https://wiki.guildwars2.com/wiki/Daily_Raid_Bounties" target="_blank" rel="noopener noreferrer">Guild Wars 2 Wiki ↗</a><span class="footer-divider">·</span><span><span data-i18n="verified">核对日期 2026-10-21</span></span></div>
     </footer>
   </div>
+
+  <dialog id="share-dialog" class="share-dialog" aria-labelledby="share-dialog-title">
+    <div class="share-dialog-heading"><h2 id="share-dialog-title" data-i18n="previewTitle">分享图片预览</h2><button id="close-share" type="button" class="language-toggle" data-i18n="closePreview">关闭预览</button></div>
+    <p id="image-status" class="image-status" role="status" aria-live="polite"></p>
+    <div class="image-preview-wrap"><img id="share-preview" class="share-preview" alt="" hidden></div>
+    <div class="image-actions"><a id="save-image" class="secondary-button" download hidden data-i18n="saveImage">保存 PNG 图片</a><button id="share-image" type="button" class="secondary-button" hidden data-i18n="shareImage">分享图片</button></div>
+  </dialog>
 </body>
 </html>

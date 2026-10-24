@@ -10,7 +10,8 @@
   const name = I.encounter;
   const page = document.body.dataset.page;
   let renderedUtcDate = '';
-  let forecastExpanded = false;
+  let selectedDate = null;
+  let renderedBountyDate = '';
   let renderedLanguage = '';
   let copyState = '';
   let copyBusy = false;
@@ -35,43 +36,15 @@
     return row;
   }
 
-  function makeForecastItem(item) {
-    const row = element('div', 'forecast-item');
-    row.append(element('span', 'forecast-index', `0${item.group}`));
-    const body = element('div', 'forecast-item-main');
-    body.append(element('div', 'forecast-boss', name(item, 'boss')), element('div', 'forecast-instance', `${item.wing ? `W${item.wing} · ` : ''}${name(item, 'instance')}`));
-    row.append(body);
-    return row;
-  }
-
-  function makeForecastDay(dateString, offset) {
-    const card = element('article', 'forecast-day');
-    const header = element('header', 'forecast-day-header');
-    const left = element('div');
-    left.append(element('span', 'forecast-day-overline', t('futureDay', { n: offset })), element('h3', 'forecast-day-title', I.dateLabel(dateString)));
-    header.append(left, element('span', 'forecast-day-index', t('cycleShort', { n: String(R.cycleIndex(dateString) + 1).padStart(2, '0') })));
-    const list = element('div', 'forecast-list');
-    R.bountiesForDate(dateString).forEach((item) => list.append(makeForecastItem(item)));
-    card.append(header, list);
-    return card;
-  }
-
   function renderToday(dateString) {
     document.querySelector('#today-date').textContent = `${I.dateLabel(dateString, true)} · UTC`;
     document.querySelector('#cycle-label').textContent = t('cycleLabel', { n: R.cycleIndex(dateString) + 1 });
     const grid = document.querySelector('#today-grid');
     grid.replaceChildren(...R.bountiesForDate(dateString).map(makeBossCard));
-    renderForecast(dateString);
+    document.querySelector('#bounty-date').value = dateString;
+    document.querySelector('#today-heading').textContent = t(dateString === R.utcToday() ? 'today' : 'chosenDay');
+    document.querySelector('#return-today').disabled = selectedDate === null;
     updateCopyUi();
-  }
-
-  function renderForecast(today) {
-    const content = document.querySelector('#forecast-content');
-    const fragment = document.createDocumentFragment();
-    const grid = element('div', 'forecast-grid');
-    for (let i = 1; i <= 7; i++) grid.append(makeForecastDay(R.dayOffset(today, i), i));
-    fragment.append(grid);
-    content.replaceChildren(fragment);
   }
 
   function makeRotationCell(item) {
@@ -168,28 +141,52 @@
   function refresh() {
     const now = new Date();
     const utcDate = R.utcToday(now);
-    if (utcDate !== renderedUtcDate || I.language !== renderedLanguage) {
-      if (utcDate !== renderedUtcDate) copyState = '';
-      if (page === 'today') renderToday(utcDate);
+    const displayDate = selectedDate || utcDate;
+    if (utcDate !== renderedUtcDate || I.language !== renderedLanguage || displayDate !== renderedBountyDate) {
+      if (displayDate !== renderedBountyDate) copyState = '';
+      if (page === 'today') renderToday(displayDate);
       if (page === 'rotation') renderRotation(utcDate);
       renderedUtcDate = utcDate;
+      renderedBountyDate = displayDate;
       renderedLanguage = I.language;
     }
     updateCountdown(now);
   }
 
-  const forecastToggle = document.querySelector('#forecast-toggle');
-  if (forecastToggle) {
-    forecastToggle.addEventListener('click', () => {
-      forecastExpanded = !forecastExpanded;
-      document.querySelector('#forecast-content').hidden = !forecastExpanded;
-      forecastToggle.setAttribute('aria-expanded', String(forecastExpanded));
-      document.querySelector('#forecast-toggle-text').textContent = t(forecastExpanded ? 'collapse' : 'expand');
+  const dateInput = document.querySelector('#bounty-date');
+  if (dateInput) {
+    dateInput.addEventListener('change', () => {
+      const error = document.querySelector('#date-error');
+      try {
+        R.dayNumber(dateInput.value);
+        selectedDate = dateInput.value;
+        error.textContent = '';
+        refresh();
+        document.querySelector('#return-today').disabled = false;
+      } catch (_) {
+        dateInput.value = renderedBountyDate;
+        error.textContent = t('invalidDate');
+      }
+    });
+    document.querySelector('#return-today').addEventListener('click', () => {
+      selectedDate = null;
+      renderedBountyDate = '';
+      document.querySelector('#date-error').textContent = '';
+      refresh();
     });
   }
 
+  document.querySelector('#share-daily')?.addEventListener('click', () => {
+    refresh();
+    globalThis.GW2_SHARE_IMAGE.open('daily', renderedBountyDate);
+  });
+  document.querySelector('#share-cycle')?.addEventListener('click', () => {
+    refresh();
+    globalThis.GW2_SHARE_IMAGE.open('cycle', renderedUtcDate);
+  });
+
   function dailyCopyText(dateString) {
-    const lines = [t('copyHeading', { date: dateString })];
+    const lines = [t(dateString === R.utcToday() ? 'copyHeading' : 'copyHeadingSelected', { date: dateString })];
     R.bountiesForDate(dateString).forEach((item, index) => {
       lines.push(t('copyBoss', { n: index + 1, name: name(item, 'boss') }),
         t('copyInstance', { name: `${item.wing == null ? '' : `W${item.wing} · `}${name(item, 'instance')}` }));
@@ -201,13 +198,13 @@
     const button = document.querySelector('#copy-today');
     if (!button) return;
     button.disabled = copyBusy;
-    button.textContent = t(copyBusy ? 'copying' : 'copy');
+    button.textContent = t(copyBusy ? 'copying' : (selectedDate && selectedDate !== R.utcToday() ? 'copySelected' : 'copy'));
     const status = document.querySelector('#copy-status');
     status.dataset.error = String(copyState === 'manual');
     status.textContent = copyState === 'success' ? t('copySuccess') : copyState === 'manual' ? t('copyFailed') : '';
     const fallback = document.querySelector('#copy-fallback');
     fallback.hidden = copyState !== 'manual';
-    if (copyState === 'manual') document.querySelector('#copy-text').value = dailyCopyText(R.utcToday());
+    if (copyState === 'manual') document.querySelector('#copy-text').value = dailyCopyText(selectedDate || R.utcToday());
   }
 
   function legacyCopy(text) {
@@ -229,7 +226,7 @@
     copyToday.addEventListener('click', async () => {
       // 使用点击瞬间的 UTC 日期，避免跨日后复制到昨日目标。
       refresh();
-      const text = dailyCopyText(renderedUtcDate);
+      const text = dailyCopyText(renderedBountyDate);
       copyBusy = true;
       copyState = '';
       updateCopyUi();
@@ -263,8 +260,8 @@
 
   I.onChange(() => {
     refresh();
-    const toggleText = document.querySelector('#forecast-toggle-text');
-    if (toggleText) toggleText.textContent = t(forecastExpanded ? 'collapse' : 'expand');
+    const error = document.querySelector('#date-error');
+    if (error?.textContent) error.textContent = t('invalidDate');
   });
 
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });

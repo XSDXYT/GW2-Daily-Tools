@@ -16,8 +16,8 @@ function setup({ clipboard = 'success', legacy = false, page = 'today', language
     focus() {} select() {} setSelectionRange() {}
   }
   const selectors = page === 'today'
-    ? ['today-date', 'cycle-label', 'today-grid', 'forecast-content', 'forecast-toggle', 'forecast-toggle-text', 'countdown', 'copy-today', 'copy-text', 'copy-fallback', 'copy-status']
-    : ['period-label', 'rotation-today', 'rotation-tbody', 'mobile-rotation', 'cycle-track', 'jump-today'];
+    ? ['today-date', 'cycle-label', 'today-grid', 'bounty-date', 'return-today', 'today-heading', 'date-error', 'share-daily', 'countdown', 'copy-today', 'copy-text', 'copy-fallback', 'copy-status']
+    : ['period-label', 'rotation-today', 'rotation-tbody', 'mobile-rotation', 'cycle-track', 'jump-today', 'share-cycle'];
   selectors.push('language-toggle');
   const nodes = Object.fromEntries(selectors.map(id => [`#${id}`, new Element()]));
   if (language && !storage.has('gw2-raids-language')) storage.set('gw2-raids-language', language);
@@ -36,12 +36,13 @@ function setup({ clipboard = 'success', legacy = false, page = 'today', language
   let now = '2026-10-20T23:59:59Z';
   const writes = [];
   const navigator = {};
+  const exports = [];
   if (clipboard !== 'missing') navigator.clipboard = { async writeText(text) {
     if (clipboard === 'denied') throw new Error('Clipboard denied');
     writes.push(text);
   } };
   const context = vm.createContext({
-    navigator,
+    navigator, GW2_SHARE_IMAGE: { open(mode, date) { exports.push({ mode, date }); } },
     localStorage: {
       getItem(key) { if (blockedStorage) throw Error('Storage blocked'); return storage.get(key) || null; },
       setItem(key, value) { if (blockedStorage) throw Error('Storage blocked'); storage.set(key, value); }
@@ -59,18 +60,16 @@ function setup({ clipboard = 'success', legacy = false, page = 'today', language
   for (const file of ['data.js', 'rotation.js', 'encounters-zh.js', 'i18n.js', 'app.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context);
   }
-  return { nodes, writes, storage, context, staticNodes, documentElement, events, toggle: () => nodes['#language-toggle'].handlers.click(), setNow: value => { now = value; }, click: () => nodes['#copy-today'].handlers.click() };
+  return { nodes, writes, exports, storage, context, staticNodes, documentElement, events, toggle: () => nodes['#language-toggle'].handlers.click(), setNow: value => { now = value; }, click: () => nodes['#copy-today'].handlers.click() };
 }
 
-test('homepage renders four rows and seven forecast days; toggle still works', () => {
+test('homepage renders four targets with date controls and has no seven-day expansion', () => {
   const { nodes } = setup();
   assert.equal(nodes['#today-grid'].children.length, 4);
-  assert.equal(nodes['#forecast-content'].children[0].children[0].children.length, 7);
-  nodes['#forecast-toggle'].handlers.click();
-  assert.equal(nodes['#forecast-content'].hidden, false);
-  assert.equal(nodes['#forecast-toggle']['aria-expanded'], 'true');
-  nodes['#forecast-toggle'].handlers.click();
-  assert.equal(nodes['#forecast-content'].hidden, true);
+  assert.equal(nodes['#bounty-date'].value, '2026-10-20');
+  assert.equal(nodes['#return-today'].disabled, true);
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.doesNotMatch(html, /forecast-toggle|forecast-content|forecast-section/);
 });
 
 test('one click copies the date, all four bosses, and their instances', async () => {
@@ -126,14 +125,11 @@ test('shared renderer still builds all 12 rotation days', () => {
 
 test('one click switches all homepage names, dates, static labels and copied text to Chinese', async () => {
   const app = setup();
-  app.nodes['#forecast-toggle'].handlers.click();
   app.toggle();
   assert.equal(app.documentElement.lang, 'zh-CN');
   assert.equal(app.nodes['#today-grid'].children[0].children[1].textContent, '末世魔监工');
   assert.match(app.nodes['#today-date'].textContent, /星期二/);
   assert.match(app.nodes['#cycle-label'].textContent, /轮换第 6/);
-  assert.equal(app.nodes['#forecast-content'].hidden, false);
-  assert.equal(app.nodes['#forecast-toggle-text'].textContent, '收起未来7天');
   assert.equal(app.nodes['#language-toggle'].textContent, 'English');
   for (const n of app.staticNodes) {
     if (n['data-i18n']) assert.equal(n.textContent, app.context.GW2_I18N.t(n['data-i18n']));
@@ -238,4 +234,46 @@ test('Wiki-backed corrections are consistent in names and copy text', async () =
   await app.click();
   assert.match(app.writes[1], /Stronghold of the Faithful/);
   assert.doesNotMatch(app.writes[1], /信仰要塞/);
+});
+
+
+test('selected date drives display, copied text and daily image, and remains pinned across midnight', async () => {
+  const app = setup();
+  app.nodes['#bounty-date'].value = '2026-10-15';
+  app.nodes['#bounty-date'].handlers.change();
+  assert.equal(app.nodes['#today-grid'].children[0].children[1].textContent, 'Legendary Icebrood Construct');
+  assert.equal(app.nodes['#return-today'].disabled, false);
+  await app.click();
+  assert.match(app.writes[0], /2026-10-15 UTC/);
+  assert.match(app.writes[0], /Qadim \(Q1\)/);
+  app.setNow('2026-10-21T00:00:00Z');
+  app.events.focus();
+  assert.equal(app.nodes['#bounty-date'].value, '2026-10-15');
+  app.nodes['#share-daily'].handlers.click();
+  assert.deepEqual(app.exports[0], { mode: 'daily', date: '2026-10-15' });
+  app.toggle();
+  await app.click();
+  assert.match(app.writes[1], /传奇冰巢构造体/);
+  assert.match(app.writes[1], /2026-10-15 UTC/);
+  app.nodes['#return-today'].handlers.click();
+  assert.equal(app.nodes['#bounty-date'].value, '2026-10-21');
+  await app.click();
+  assert.match(app.writes[2], /2026-10-21 UTC/);
+});
+
+test('invalid and empty dates preserve the previously selected data', () => {
+  const app = setup();
+  for (const value of ['', '2026-02-30', '2026-2-3']) {
+    app.nodes['#bounty-date'].value = value;
+    app.nodes['#bounty-date'].handlers.change();
+    assert.equal(app.nodes['#bounty-date'].value, '2026-10-20');
+    assert.match(app.nodes['#date-error'].textContent, /valid date/);
+  }
+});
+
+test('rotation sharing uses the current cycle anchor date after rollover', () => {
+  const app = setup({ page: 'rotation' });
+  app.setNow('2026-10-27T00:00:01Z');
+  app.nodes['#share-cycle'].handlers.click();
+  assert.deepEqual(app.exports[0], { mode: 'cycle', date: '2026-10-27' });
 });

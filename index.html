@@ -4,23 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101715">
-  <meta name="description" content="快速查看激战2今日四个日常 Boss 及所属副本，一键复制分享，支持未来七天与完整12天轮换查询。" data-i18n-content="descriptionToday">
+  <meta name="description" content="快速查看激战2今日四个日常 Boss 及所属副本，一键复制分享，支持指定日期与完整12天轮换查询。" data-i18n-content="descriptionToday">
   <title data-i18n="todayTitle">今日日常 · GW2 Raid Bounties</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.css?v=3">
-  <link rel="stylesheet" href="assets/css/today.css?v=3">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4">
+  <link rel="stylesheet" href="assets/css/today.css?v=4">
+  <link rel="stylesheet" href="assets/css/share.css?v=4">
   <script defer src="assets/js/data.js"></script>
   <script defer src="assets/js/rotation.js"></script>
-  <script defer src="assets/js/encounters-zh.js?v=3"></script>
-  <script defer src="assets/js/i18n.js?v=3"></script>
-  <script defer src="assets/js/app.js?v=3"></script>
+  <script defer src="assets/js/encounters-zh.js?v=4"></script>
+  <script defer src="assets/js/i18n.js?v=4"></script>
+  <script defer src="assets/js/share-image.js?v=4"></script>
+  <script defer src="assets/js/app.js?v=4"></script>
 </head>
 <body data-page="today">
   <a class="skip-link" href="#main-content"><span data-i18n="skip">跳转到主要内容</span></a>
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="返回GW2日常十人本首页" data-i18n-aria-label="homeAria">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="m20 3 15 9v16l-15 9L5 28V12Z" stroke="currentColor"/></path><path d="m12 27 5-14 3 6 3-6 5 14-8-5Z" fill="currentColor"/></path><path d="m20 6 2 4-2 3-2-3Z" fill="currentColor"/></path></svg></span>
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="m20 3 15 9v16l-15 9L5 28V12Z" stroke="currentColor"/><path d="m12 27 5-14 3 6 3-6 5 14-8-5Z" fill="currentColor"/><path d="m20 6 2 4-2 3-2-3Z" fill="currentColor"/></svg></span>
         <span class="brand-copy"><strong>GW2 <span>RAID</span></strong><small><span data-i18n="tagline">泰瑞亚 · 每日悬赏指南</span></small></span>
       </a>
       <nav class="nav" aria-label="主导航" data-i18n-aria-label="nav">
@@ -34,10 +36,12 @@
         <div class="today-summary">
         <div class="today-heading">
           <div><h1 id="today-heading"><span data-i18n="today">今日日常</span></h1><p class="date-line"><span id="today-date"><span data-i18n="loadingDate">读取当前日期…</span></span><span id="cycle-label"><span data-i18n="loadingCycle">轮换计算中</span></span></p></div>
-          <button id="copy-today" class="primary-button" type="button" disabled><span data-i18n="copy">一键复制今日日常</span></button>
+          <div class="daily-actions"><button id="copy-today" class="primary-button" type="button" disabled><span data-i18n="copy">一键复制今日日常</span></button><button id="share-daily" class="secondary-button" type="button" data-i18n="shareDaily">截图分享</button></div>
         </div>
         <p class="reset-line"><span data-i18n="resetRule">每日北京时间 08:00 刷新</span> <span aria-hidden="true">·</span> <span><span data-i18n="resetRemaining">距离刷新</span></span> <span id="countdown" role="timer" aria-label="距离下一次刷新" data-i18n-aria-label="resetTimer">--:--:--</span></p>
         </div>
+        <div class="date-toolbar"><label for="bounty-date" data-i18n="chooseDate">查看日期（UTC）</label><input id="bounty-date" type="date" min="0100-01-01" max="9999-12-31" required><button id="return-today" class="language-toggle" type="button" data-i18n="returnToday">回到今天</button></div>
+        <p id="date-error" class="date-error" role="status" aria-live="polite"></p>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
         <div id="copy-fallback" class="copy-fallback" hidden>
           <label for="copy-text"><span data-i18n="manualHelp">自动复制不可用，请长按或选中下方文字复制。</span></label>
@@ -47,16 +51,16 @@
         <div id="today-grid" class="boss-list" aria-live="polite"></div>
         <noscript><p class="noscript"><span data-i18n="noscript">请启用 JavaScript 查看自动计算的日常数据。</span></p></noscript>
       </section>
-      <section class="forecast-section" aria-labelledby="forecast-heading">
-        <div class="forecast-top">
-          <h2 id="forecast-heading"><span data-i18n="forecast">未来七天</span></h2>
-          <button id="forecast-toggle" type="button" class="action-button" aria-controls="forecast-content" aria-expanded="false"><span id="forecast-toggle-text"><span data-i18n="expand">展开未来7天</span></span><span class="button-arrow" aria-hidden="true">⌄</span></button>
-        </div>
-        <div id="forecast-content" hidden></div>
-      </section>
       <p class="rotation-link"><a href="rotation.html"><span data-i18n="fullRotation">查看完整12天循环表 →</span></a></p>
     </main>
     <footer class="site-footer"><span><span data-i18n="footerToday">非官方玩家查询工具 · 日期以 UTC 为准</span></span><a href="https://wiki.guildwars2.com/wiki/Daily_Raid_Bounties" target="_blank" rel="noopener noreferrer"><span data-i18n="wikiSource">数据来源：GW2 Wiki ↗</span></a></footer>
   </div>
+
+  <dialog id="share-dialog" class="share-dialog" aria-labelledby="share-dialog-title">
+    <div class="share-dialog-heading"><h2 id="share-dialog-title" data-i18n="previewTitle">分享图片预览</h2><button id="close-share" type="button" class="language-toggle" data-i18n="closePreview">关闭预览</button></div>
+    <p id="image-status" class="image-status" role="status" aria-live="polite"></p>
+    <div class="image-preview-wrap"><img id="share-preview" class="share-preview" alt="" hidden></div>
+    <div class="image-actions"><a id="save-image" class="secondary-button" download hidden data-i18n="saveImage">保存 PNG 图片</a><button id="share-image" type="button" class="secondary-button" hidden data-i18n="shareImage">分享图片</button></div>
+  </dialog>
 </body>
 </html>

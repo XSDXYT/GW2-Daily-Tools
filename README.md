@@ -1,85 +1,62 @@
 # GW2 Raid Bounties — 激战2日常十人本查询
 
-无需服务器、数据库、构建工具的纯静态网站：两张页面、4项每日团队悬赏、未来7天预告与完整12天循环表。
+纯静态网站，无需后端、数据库、构建步骤或外部图片服务。
+
+## 当前功能
+
+- 首页展示当天四组 Boss 与所属副本；每天 UTC 00:00（北京时间 08:00）自动刷新。
+- 选择任意有效日期，查看并复制当天的四项日常。指定日期固定保留，点击“回到今天”恢复跟随当前 UTC 日期。
+- “截图分享”生成所选日期的高清 PNG，带日期、轮换序号、全部四个 Boss 及副本名称。
+- 循环表的“整表截图分享”生成当前整轮 12 天的完整 PNG，包含全部 48 个目标、悬赏名称和日期；今天会高亮。
+- 图片先预览，可保存 PNG。浏览器支持文件分享时，预览中额外显示“分享图片”，通过单独点击打开系统分享菜单。
+- 全局中英文切换；界面、名字、复制内容与分享图跟随当前语言。浏览器会记住语言选择。
+- 七天展开预告已删除。
+
+## 分享图片
+
+1. 在首页选日期，或保持默认的今天，点击“截图分享”。
+2. 查看预览后选择“保存 PNG 图片”或“分享图片”。
+3. 分享整轮安排时，打开“12天循环表”，点击“整表截图分享”。
+
+PNG 在浏览器本地使用 Canvas 绘制，不需要将日常数据上传至第三方截图服务。图片宽度固定为单日 1100px、整表 1800px，高度按内容自动计算；完整长表不依赖手机屏幕可见区域。
+
+系统分享取决于浏览器的 Web Share 文件支持（通常需 HTTPS 和用户点击）。不支持时仍可保存 PNG；部分手机可能在新页面打开图片，此时可长按保存。取消系统分享后，预览和保存入口仍保留。
 
 ## 文件结构
 
-```text
-gw2-daily-raids/
-├── index.html                首页：今日4个 Boss 和未来7天
-├── rotation.html             第二页：完整12天循环表
-├── assets/
-│   ├── css/styles.css        全站样式，桌面/手机适配
-│   ├── js/data.js            36项Boss、所属副本、4组轮换序列
-│   ├── js/rotation.js        UTC日期、12天循环、每日刷新计算
-│   ├── js/app.js             两页UI、7天展开、刷新倒计时
-│   └── favicon.svg           站点图标
-├── tests/test-rotation.cjs   自动化测试
-├── .nojekyll                 禁用Jekyll处理
-└── README.md
-```
+- `index.html`：首页、日期选择、文字复制和单日图片分享。
+- `rotation.html`：完整12天循环表与整表图片分享。
+- `assets/js/data.js`：36项英文遭遇战数据及轮换顺序。
+- `assets/js/rotation.js`：UTC 日期与轮换计算。
+- `assets/js/encounters-zh.js`：中文名称。
+- `assets/js/i18n.js`：全站双语文案与语言选择。
+- `assets/js/app.js`：页面渲染、指定日期、刷新及复制。
+- `assets/js/share-image.js`：分享模型、Canvas PNG 绘制、预览、保存和系统分享。
+- `assets/css/styles.css`、`today.css`、`share.css`：全站、首页与分享界面样式。
+- `docs/translations.md`：名称来源、已修正译名及核验限制。
 
-## 如何在电脑上预览
+## 本地预览及 GitHub Pages
 
-- **最简单**：双击 `index.html`，因为使用普通 `<script defer>`，不会遇到 ES Modules 在 `file://` 上的跨域问题。
-- 或者使用 Python 启动本地服务：进入本目录执行 `python -m http.server 8000`，浏览器打开 http://localhost:8000/。
-- 点击页面顶部“12天循环表”可进入第二页。
+双击 `index.html` 即可打开，也可进入项目目录运行 `python -m http.server 8000`，访问 http://localhost:8000/。
 
-## 如何上传 GitHub Pages（不需要本地安装 Node）
+GitHub Pages：在仓库 `Settings → Pages` 中选择 `Deploy from a branch`、`main`、`/(root)` 并保存。文件应直接放在仓库根目录；`.nojekyll` 用于禁用 Jekyll。
 
-1. GitHub 新建一个 **Public** 仓库，例如 `gw2-daily-raids`。
-2. 解压这个项目包，将 `index.html`、`rotation.html`、`assets` 文件夹等**直接放在仓库根目录**。不要多套一层 `gw2-daily-raids/` 目录。
-3. 进入仓库 `Settings` → `Pages`。
-4. 在 `Build and deployment` 下面选择 `Deploy from a branch`；分支选择 `main`，目录选 `/(root)`，保存。
-5. GitHub Pages 发布后，访问 `https://你的用户名.github.io/gw2-daily-raids/`。
+## 日期和名称说明
 
-页面使用相对资源路径，因此不要求独立域名，项目站点即可正常使用。
+- 锚点：2026-10-15 UTC 为周期第1天；四组长度分别为6、12、12、6，完整组合12天重复。
+- 默认日期使用 UTC；设备时间应准确。日期选择器同样按 UTC 日期查询。
+- 数据静态计算，未连接游戏 API；未来游戏轮换规则改变时需更新 `data.js`。
+- 英文数据参考 [GW2 Wiki](https://wiki.guildwars2.com/wiki/Daily_Raid_Bounties)。中文采用用户提供的名称数据库及可检索 Wiki 对照修正；来源、未确认项与直连限制见 `docs/translations.md`。缺失中文回退英文。
+- 此站为非官方玩家工具，与 ArenaNet 无关。
 
-## 日期与数据逻辑
+## 验证
 
-- 以 **2026-10-15 UTC = 周期第1天** 作为锚点。
-- 每天 **UTC 00:00** 刷新（北京时间08:00；日本时间09:00），不按设备本地午夜刷新。
-- 每天第1/4组各在6项中轮换，第2/3组各在12项中轮换；完整轮换每12天重复。
-- 页面每秒重新读取访客设备时间；跨UTC日时立即重新渲染，切换回标签页也会校正。
-- 网站完全离线计算，不请求游戏API；**依赖访客设备时间准确**。
-- 数据来自玩家社区维护的 [Guild Wars 2 Wiki：Daily Raid Bounties](https://wiki.guildwars2.com/wiki/Daily_Raid_Bounties)。数据基线于 2026-10-21 核对。
-- 如果未来游戏更新更改Boss池或轮换顺序，需要手动更新 `assets/js/data.js` 的条目和4组顺序（必要时调整锚点及周期算法）。
-
-## 运行测试（可选）
-
-本项目正常浏览和部署**不需要 Node.js**。如果你的电脑装有 Node.js 18+，可在项目根目录执行：
+安装 Node.js 18+ 后执行：
 
 ```sh
-node --test tests/test-rotation.cjs tests/test-homepage.cjs
+node --test tests/test-rotation.cjs tests/test-homepage.cjs tests/test-share-image.cjs
 ```
 
-涵盖36项数据完整性、2026年10月15/20/21/26/27日的轮换、跨日UTC、负数日期、12天重复等。
+测试覆盖轮换、跨UTC日、日期选择及固定、无效日期、双语复制、语言偏好、分享图片的日期/完整48项目、长名称换行、图片生成失败、系统分享取消与旧预览资源清理。
 
-## 可自由编辑
-
-- 改网站颜色和排版：`assets/css/styles.css` 开头的 CSS 变量。
-- 改Boss名称/副本名：`assets/js/data.js` 的 `ENCOUNTERS`。
-- 改轮换顺序：`assets/js/data.js` 的 `GROUPS`。
-- 改网站标题：`index.html`、`rotation.html`。
-
-此站点是非官方粉丝工具，与 ArenaNet 无关。Guild Wars、Guild Wars 2 相关名称归其权利人所有。
-
-## 当前界面
-
-首页恢复森林深色、铜金细节和山峦背景，以紧凑四组卡片突出当天 Boss 与所属副本；点击“一键复制今日日常”可复制日期、全部 Boss 和所属副本，方便粘贴分享。浏览器不支持或禁止自动复制时，会显示可手动复制的完整文本。复制时重新确认 UTC 日期，避免跨日后复制昨日目标。
-
-未来七天默认折叠，完整12天循环表仍可通过顶部导航查看。首页样式位于 `assets/css/today.css`，循环表样式位于 `assets/css/styles.css`。
-
-所有资源均在本地，无需安装依赖、连接外部字体服务或构建。Wiki 链接需要联网。
-
-验证：轮换计算、首页渲染、七天展开收起、复制成功、复制被拒降级、旧浏览器降级、跨UTC日复制、循环表渲染测试及 JavaScript 语法检查通过。未完成真实浏览器视觉与系统剪贴板验证。
-
-## 中英文切换
-
-两页右上角的 `English / 中文` 按钮可切换全站文案、Boss、副本、悬赏、日期及复制内容。默认中文；语言选择保存到浏览器 localStorage，跨页及再次访问时保留，存储不可用时仍可在当前页切换。多标签页会同步选择。UTC轮换计算不受语言影响。
-
-名称优先采用用户提供的 `gw2_database.json`。此前补充译名已按可检索的 Wiki 双语资料修订，核验范围与限制见 `docs/translations.md`；可编辑 `assets/js/encounters-zh.js` 修订名称，界面文案位于 `assets/js/i18n.js`。新条目缺少中文时保留英文名称。
-
-已新增语言切换、36项译名、语言偏好跨页保留、多标签同步、存储被禁、双语复制及手动复制降级测试。真实浏览器布局和系统剪贴板尚未验证。
-
-本次名称修正覆盖信仰要塞、救赎小道、巴里尔山、宇宙观测台、菲勃神殿、桑莱废料场、旧雄狮广场、海浪总管齐拉等。英文 Wiki 与指定镜像的直连核验受限；未确认的 Watchknight Triumvirate 中文集合名回退英文，完整记录见 `docs/translations.md`。
+本次另外使用本地 Canvas 实际生成并目视检查了中英文单日图与整表 PNG。真实浏览器页面布局和手机系统分享菜单未在当前环境实机验证。
