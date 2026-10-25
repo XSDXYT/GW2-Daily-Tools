@@ -1,0 +1,26 @@
+{
+  "name": "gw2-daily-tools",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.12" },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "typecheck": "vue-tsc --noEmit",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:domain": "node --import tsx --test tests/dates.test.ts tests/fractals.test.ts tests/raids.test.ts tests/share.test.ts",
+    "data:update": "node scripts/update-fractals.mjs",
+    "names:update": "node scripts/update-localization.mjs",
+    "test:localization": "node --test tests/localization.test.mjs"
+  },
+  "dependencies": { "vue": "^3.5.44" },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "tsx": "^4.20.6",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.5",
+    "vue-tsc": "^3.3.13"
+  }
+}

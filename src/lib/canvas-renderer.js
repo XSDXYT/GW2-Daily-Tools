@@ -1,44 +1,6 @@
-/* 使用本站数据绘制独立 PNG 分享图；无外部图片、字体或截图服务依赖。 */
-(function () {
-  'use strict';
-  const R = globalThis.GW2_ROTATION;
-  const I = globalThis.GW2_I18N;
-  const colors = ['#c6b47d', '#9db0c1', '#9cb99b', '#c39b84'];
-  const font = '"Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif';
-
-  // Freeze localized strings at generation time so an open preview remains one coherent image.
-  function buildModel(mode, date, today = R.utcToday()) {
-    if (!['daily', 'cycle'].includes(mode)) throw new RangeError('Invalid image mode');
-    R.dayNumber(date);
-    R.dayNumber(today);
-    const start = mode === 'cycle' ? R.currentCycleStart(date) : date;
-    const end = mode === 'cycle' ? R.dayOffset(start, 11) : start;
-    R.dayNumber(end);
-    const days = Array.from({ length: mode === 'cycle' ? 12 : 1 }, (_, index) => {
-      const day = R.dayOffset(start, index);
-      return {
-        date: day, day: I.t('day', { n: String(R.cycleIndex(day) + 1).padStart(2, '0') }),
-        isToday: day === today,
-        items: R.bountiesForDate(day).map(item => ({
-          group: item.group, label: I.t('groupLabel', { n: item.group }),
-          boss: I.encounter(item, 'boss'),
-          instance: `${item.wing == null ? '' : `W${item.wing} · `}${I.encounter(item, 'instance')}`,
-          bounty: item.bounty !== item.boss ? I.t('bountyLabel', { name: I.encounter(item, 'bounty') }) : ''
-        }))
-      };
-    });
-    return {
-      mode, language: I.language, start, end, days,
-      title: I.t(mode === 'cycle' ? 'exportCycleTitle' : 'exportDailyTitle'),
-      subtitle: mode === 'cycle' ? I.t('exportCycleSubtitle', { start, end }) : I.t('exportDailySubtitle', { date, n: R.cycleIndex(date) + 1 }),
-      footer: I.t('exportFooter'), todayLabel: I.t('currentDay'), instanceLabel: I.t('instanceColumn'),
-      columns: [I.t('dateColumn'), ...[1, 2, 3, 4].map(n => I.t('groupLabel', { n }))],
-      source: 'xsdxyt.github.io/GW2-Daily-Raids/',
-      alt: mode === 'cycle' ? I.t('exportAltCycle', { start, end }) : I.t('exportAltDaily', { date }),
-      filename: `gw2-${mode === 'cycle' ? 'rotation' : 'daily'}-${start}${mode === 'cycle' ? `_${end}` : ''}-${I.language}.png`
-    };
-  }
-
+// Canvas drawing preserved from the original raid tool; models are supplied by TypeScript.
+const colors = ['#c6b47d', '#9db0c1', '#9cb99b', '#c39b84'];
+const font = '"Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif';
   // English words wrap at spaces; overlong words and Chinese names wrap by Unicode character.
   function wrapText(ctx, value, width) {
     const tokens = String(value).match(/\s+|[A-Za-z0-9'’()\-]+|[^\s]/gu) || [];
@@ -158,62 +120,5 @@
     return canvas;
   }
 
-  const dialog = document.querySelector('#share-dialog');
-  let objectUrl = '', file = null, ticket = 0;
-  function cleanup() {
-    ticket++;
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
-    objectUrl = ''; file = null;
-    document.querySelector('#share-preview')?.removeAttribute('src');
-    const save = document.querySelector('#save-image');
-    if (save) { save.removeAttribute('href'); save.hidden = true; }
-    const share = document.querySelector('#share-image');
-    if (share) share.hidden = true;
-  }
-  async function open(mode, date) {
-    const model = buildModel(mode, date);
-    cleanup();
-    const currentTicket = ticket;
-    const status = document.querySelector('#image-status');
-    const preview = document.querySelector('#share-preview');
-    const save = document.querySelector('#save-image');
-    const share = document.querySelector('#share-image');
-    preview.hidden = true;
-    status.textContent = I.t('imageGenerating');
-    if (!dialog.open) dialog.showModal();
-    try {
-      if (document.fonts?.ready) await document.fonts.ready;
-      if (currentTicket !== ticket) return;
-      const canvas = render(model);
-      const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('PNG encoding failed')), 'image/png'));
-      if (currentTicket !== ticket) return;
-      objectUrl = URL.createObjectURL(blob);
-      preview.src = objectUrl; preview.alt = model.alt; preview.hidden = false;
-      save.href = objectUrl; save.download = model.filename; save.hidden = false;
-      file = typeof File === 'function' ? new File([blob], model.filename, { type: 'image/png' }) : null;
-      try { share.hidden = !(file && navigator.share && navigator.canShare?.({ files: [file] })); } catch (_) { share.hidden = true; }
-      share.disabled = false;
-      status.textContent = I.t('imageReady');
-    } catch (_) {
-      if (currentTicket === ticket) status.textContent = I.t('imageFailed');
-    }
-  }
-  if (dialog) {
-    document.querySelector('#close-share').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', cleanup);
-    document.querySelector('#share-image').addEventListener('click', async () => {
-      if (!file) return;
-      const button = document.querySelector('#share-image');
-      const currentTicket = ticket;
-      button.disabled = true;
-      try {
-        // Separate click keeps transient user activation for the native share sheet.
-        await navigator.share({ files: [file] });
-        if (ticket === currentTicket) document.querySelector('#image-status').textContent = I.t('shareDone');
-      } catch (error) {
-        if (ticket === currentTicket) document.querySelector('#image-status').textContent = I.t(error.name === 'AbortError' ? 'shareCancelled' : 'shareFailed');
-      } finally { button.disabled = false; }
-    });
-  }
-  globalThis.GW2_SHARE_IMAGE = Object.freeze({ buildModel, wrapText, render, open });
-})();
+
+export { render, wrapText };

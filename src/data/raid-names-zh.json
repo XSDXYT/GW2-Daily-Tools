@@ -1,5 +1,4 @@
-/* 名称来源及核验范围见 docs/translations.md；空中文值由 i18n.js 回退英文。 */
-globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
+{
   "shiverpeaks": {
     "boss": "传奇冰巢构造体",
     "instance": "席瓦雪山小径",
@@ -18,12 +17,12 @@ globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
   "gorseval": {
     "boss": "多变藤戈瑟瓦尔",
     "instance": "灵魂山谷",
-    "bounty": "多变藤戈瑟瓦尔"
+    "bounty": "戈瑟瓦尔"
   },
   "cairn": {
     "boss": "不屈的凯玲",
     "instance": "忏悔者堡垒",
-    "bounty": "不屈的凯玲"
+    "bounty": "凯玲"
   },
   "mursaat": {
     "boss": "末世魔监工",
@@ -68,7 +67,7 @@ globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
   "sabetha": {
     "boss": "破坏者萨蓓莎",
     "instance": "灵魂山谷",
-    "bounty": "破坏者萨蓓莎"
+    "bounty": "萨蓓莎"
   },
   "xunlai": {
     "boss": "安卡",
@@ -98,7 +97,7 @@ globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
   "matthias": {
     "boss": "马蒂亚斯·加布瑞尔",
     "instance": "救赎小道",
-    "bounty": "马蒂亚斯·加布瑞尔"
+    "bounty": "马蒂亚斯"
   },
   "xera": {
     "boss": "琦拉",
@@ -123,7 +122,7 @@ globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
   "decima": {
     "boss": "风暴歌手迪西玛",
     "instance": "巴里尔山",
-    "bounty": "风暴歌手迪西玛"
+    "bounty": "迪西玛"
   },
   "adina": {
     "boss": "基石守护者艾迪娜",
@@ -138,7 +137,7 @@ globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
   "ura": {
     "boss": "蒸汽尖啸者厄拉",
     "instance": "巴里尔山",
-    "bounty": "蒸汽尖啸者厄拉"
+    "bounty": "厄拉"
   },
   "kaineng": {
     "boss": "李部长",
@@ -178,6 +177,6 @@ globalThis.GW2_ENCOUNTERS_ZH = Object.freeze({
   "greer": {
     "boss": "瘟疫使者格里尔",
     "instance": "巴里尔山",
-    "bounty": "瘟疫使者格里尔"
+    "bounty": "格里尔"
   }
-});
+}

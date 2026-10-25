@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/Invisi/gw2-fotm-instabilities",
+  "commit": "e7bef51e999609d5ee65ca0a1c96a65a0142185f",
+  "gameBuild": 207032,
+  "validFrom": "2026-09-15",
+  "retrievedAt": "2026-10-25",
+  "license": "CC BY-NC 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "indexRule": "zero-based month/day in a leap-year calendar; skip February 29 in non-leap years"
+}

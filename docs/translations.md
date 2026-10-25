@@ -2,6 +2,8 @@
 
 本次修正优先依据可检索的 Wiki 中英对照及游戏文本对照表。具体对应关系、来源链接和修改字段保存在 [translation-sources.json](translation-sources.json)。
 
+2026-10-25 后续更新：官方 API 已核对全部 36 项悬赏任务名，部分与目标同名的副本字段同步更新；记录见 `src/data/official-name-sources.json` 和 [DATA_SOURCES.md](DATA_SOURCES.md)。本文件及旧 JSON 保留此前核验历史。Boss 全名与悬赏短名分开保存，例如 API 的“凯玲”仅更新悬赏字段，Boss 仍为“不屈的凯玲”。
+
 ## 核验限制
 
 尝试访问 GW2 英文 Wiki 及用户提供的镜像 `https://wiki.wishingstar.top/wiki`，相关条目在当前工具中返回 403 或无法读取；镜像的 Spirit Shard 搜索索引可以读取，但不提供本站所需的中文名称。没有将未读到的镜像页面标记为已核验。
@@ -36,4 +38,4 @@
 - NPC 后缀不显示，Q1/Q2 编号保留；双 Boss 使用各自名称组合。
 - 新条目中文为空时回退英文，避免空白或未经核实的猜译。
 
-显示、未来七天、循环表和一键复制均使用 `assets/js/encounters-zh.js` 这一个名称来源。
+显示、循环表、文字复制及分享图片均使用 `src/data/raid-names-zh.json` 这一个名称来源。Vue 迁移保留了原有映射；名称回退逻辑位于 `src/i18n.ts`。

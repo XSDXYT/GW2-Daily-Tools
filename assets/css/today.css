@@ -2,8 +2,6 @@
 :root { --surface: #1b261e; }
 body { font-size: 14px; line-height: 1.6; }
 .site-shell { max-width: 1240px; }
-.site-header .nav { margin-left: auto; }
-.site-header { gap: 24px; }
 button:disabled { cursor: wait; opacity: .65; }
 .today-section { margin-top: 28px; }
 .today-summary { padding: 26px 30px 22px; border: 1px solid #72836955; border-radius: 7px; background: linear-gradient(90deg, #152018ec, #1520188c), url('../images/tyria-landscape.svg') center 44% / cover; }
@@ -40,11 +38,6 @@ button:disabled { cursor: wait; opacity: .65; }
 a:focus-visible, button:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 4px; }
 @media (max-width: 1050px) { .boss-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .boss-row { min-height: 190px; } }
 @media (max-width: 780px) {
-  .site-header { flex-wrap: wrap; height: auto; gap: 14px; padding: 16px 0; }
-  .site-header .brand { order: 0; }
-  .site-header .language-toggle { order: 1; margin-left: auto; }
-  .site-header .nav { order: 2; width: 100%; margin-left: 0; }
-  .site-header .nav-link { flex: 1; }
   .today-section { margin-top: 20px; }
   .today-summary { padding: 23px; }
   .today-heading { align-items: flex-start; gap: 20px; }

@@ -1,7 +1,4 @@
-/* 全站文案、UTC日期格式与轻量语言偏好管理，无外部依赖。 */
-(function () {
-  'use strict';
-  const messages = {
+{
   "zh": {
     "skip": "跳转到主要内容",
     "brand": "日常查询",
@@ -194,59 +191,4 @@
     "exportAltDaily": "Share image of all four bosses and instances for {date}",
     "exportAltCycle": "Full 12-day rotation from {start} to {end}, including all 48 targets"
   }
-};
-  const key = 'gw2-raids-language';
-  let language = 'zh';
-  try {
-    const saved = localStorage.getItem(key);
-    if (saved === 'en' || saved === 'zh') language = saved;
-  } catch (_) { /* 隐私模式下保留本页的语言状态。 */ }
-  const listeners = [];
-  function t(name, values = {}) {
-    return (messages[language][name] || messages.en[name] || name)
-      .replace(/\{(\w+)\}/g, (match, field) => values[field] === undefined ? match : String(values[field]));
-  }
-  function encounter(item, field) {
-    return language === 'zh' ? (globalThis.GW2_ENCOUNTERS_ZH?.[item.id]?.[field] || item[field]) : item[field];
-  }
-  function dateLabel(date, withYear = false) {
-    const options = { timeZone: 'UTC', month: 'long', day: 'numeric', weekday: 'long' };
-    if (withYear) options.year = 'numeric';
-    return new Intl.DateTimeFormat(language === 'zh' ? 'zh-CN' : 'en-US', options).format(new Date(date + 'T00:00:00Z'));
-  }
-  function apply() {
-    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
-    for (const attribute of ['text', 'aria-label', 'content']) {
-      const dataAttribute = attribute === 'text' ? 'data-i18n' : 'data-i18n-' + attribute;
-      document.querySelectorAll('[' + dataAttribute + ']').forEach(node => {
-        const value = t(node.getAttribute(dataAttribute));
-        if (attribute === 'text') node.textContent = value;
-        else node.setAttribute(attribute, value);
-      });
-    }
-    const toggle = document.querySelector('#language-toggle');
-    if (toggle) {
-      toggle.textContent = language === 'zh' ? 'English' : '中文';
-      toggle.setAttribute('aria-label', t('switchLanguage'));
-      toggle.setAttribute('lang', language === 'zh' ? 'en' : 'zh-CN');
-    }
-  }
-  function setLanguage(next, persist = true) {
-    if (!['zh', 'en'].includes(next)) return;
-    language = next;
-    if (persist) {
-      try { localStorage.setItem(key, language); } catch (_) { /* 本页仍可正常切换。 */ }
-    }
-    apply();
-    listeners.forEach(listener => listener());
-  }
-  globalThis.GW2_I18N = Object.freeze({
-    t, encounter, dateLabel, get language() { return language; },
-    setLanguage, onChange(listener) { listeners.push(listener); }
-  });
-  document.querySelector('#language-toggle')?.addEventListener('click', () => setLanguage(language === 'zh' ? 'en' : 'zh'));
-  window.addEventListener('storage', event => {
-    if (event.key === key) setLanguage(event.newValue === 'en' ? 'en' : 'zh', false);
-  });
-  apply();
-})();
+}

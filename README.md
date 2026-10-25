@@ -1,62 +1,77 @@
-# GW2 Raid Bounties — 激战2日常十人本查询
+﻿# GW2 Daily Tools — 激战2日常工具集
 
-纯静态网站，无需后端、数据库、构建步骤或外部图片服务。
+Vue 3 + TypeScript + Vite 开发的静态工具集，包含每日团队悬赏、12 天轮换表和碎层异变查询。无需后端、数据库或游戏 API 密钥。
 
-## 当前功能
+## 运行
 
-- 首页展示当天四组 Boss 与所属副本；每天 UTC 00:00（北京时间 08:00）自动刷新。
-- 选择任意有效日期，查看并复制当天的四项日常。指定日期固定保留，点击“回到今天”恢复跟随当前 UTC 日期。
-- “截图分享”生成所选日期的高清 PNG，带日期、轮换序号、全部四个 Boss 及副本名称。
-- 循环表的“整表截图分享”生成当前整轮 12 天的完整 PNG，包含全部 48 个目标、悬赏名称和日期；今天会高亮。
-- 图片先预览，可保存 PNG。浏览器支持文件分享时，预览中额外显示“分享图片”，通过单独点击打开系统分享菜单。
-- 全局中英文切换；界面、名字、复制内容与分享图跟随当前语言。浏览器会记住语言选择。
-- 七天展开预告已删除。
-
-## 分享图片
-
-1. 在首页选日期，或保持默认的今天，点击“截图分享”。
-2. 查看预览后选择“保存 PNG 图片”或“分享图片”。
-3. 分享整轮安排时，打开“12天循环表”，点击“整表截图分享”。
-
-PNG 在浏览器本地使用 Canvas 绘制，不需要将日常数据上传至第三方截图服务。图片宽度固定为单日 1100px、整表 1800px，高度按内容自动计算；完整长表不依赖手机屏幕可见区域。
-
-系统分享取决于浏览器的 Web Share 文件支持（通常需 HTTPS 和用户点击）。不支持时仍可保存 PNG；部分手机可能在新页面打开图片，此时可长按保存。取消系统分享后，预览和保存入口仍保留。
-
-## 文件结构
-
-- `index.html`：首页、日期选择、文字复制和单日图片分享。
-- `rotation.html`：完整12天循环表与整表图片分享。
-- `assets/js/data.js`：36项英文遭遇战数据及轮换顺序。
-- `assets/js/rotation.js`：UTC 日期与轮换计算。
-- `assets/js/encounters-zh.js`：中文名称。
-- `assets/js/i18n.js`：全站双语文案与语言选择。
-- `assets/js/app.js`：页面渲染、指定日期、刷新及复制。
-- `assets/js/share-image.js`：分享模型、Canvas PNG 绘制、预览、保存和系统分享。
-- `assets/css/styles.css`、`today.css`、`share.css`：全站、首页与分享界面样式。
-- `docs/translations.md`：名称来源、已修正译名及核验限制。
-
-## 本地预览及 GitHub Pages
-
-双击 `index.html` 即可打开，也可进入项目目录运行 `python -m http.server 8000`，访问 http://localhost:8000/。
-
-GitHub Pages：在仓库 `Settings → Pages` 中选择 `Deploy from a branch`、`main`、`/(root)` 并保存。文件应直接放在仓库根目录；`.nojekyll` 用于禁用 Jekyll。
-
-## 日期和名称说明
-
-- 锚点：2026-10-15 UTC 为周期第1天；四组长度分别为6、12、12、6，完整组合12天重复。
-- 默认日期使用 UTC；设备时间应准确。日期选择器同样按 UTC 日期查询。
-- 数据静态计算，未连接游戏 API；未来游戏轮换规则改变时需更新 `data.js`。
-- 英文数据参考 [GW2 Wiki](https://wiki.guildwars2.com/wiki/Daily_Raid_Bounties)。中文采用用户提供的名称数据库及可检索 Wiki 对照修正；来源、未确认项与直连限制见 `docs/translations.md`。缺失中文回退英文。
-- 此站为非官方玩家工具，与 ArenaNet 无关。
-
-## 验证
-
-安装 Node.js 18+ 后执行：
+需要 Node.js 22.12+（推荐 24）和 npm。
 
 ```sh
-node --test tests/test-rotation.cjs tests/test-homepage.cjs tests/test-share-image.cjs
+npm ci
+npm run dev
 ```
 
-测试覆盖轮换、跨UTC日、日期选择及固定、无效日期、双语复制、语言偏好、分享图片的日期/完整48项目、长名称换行、图片生成失败、系统分享取消与旧预览资源清理。
+按终端给出的本地地址访问。迁移后需要通过开发服务器预览，不能直接双击 HTML。原有 `index.html`、`rotation.html` 地址保留，新增 `fractals.html`。
 
-本次另外使用本地 Canvas 实际生成并目视检查了中英文单日图与整表 PNG。真实浏览器页面布局和手机系统分享菜单未在当前环境实机验证。
+```sh
+npm run build
+npm run preview
+```
+
+生产文件生成在 `dist/`；可以部署到 GitHub Pages 或其他静态托管，支持仓库子路径。
+
+## 功能
+
+- 每日团队悬赏：四组 Boss、所属副本、UTC 日期选择、复制文字及高清 PNG 分享。
+- 完整 12 天轮换：桌面表格、手机卡片、定位今天、整轮 PNG 分享。
+- 碎层：7 个挑战模式、T4 日常、T1–T4 查询、名称/层数搜索、异变筛选、复制结果、未来 30 天异变日期反查。
+- 全站中英文切换及语言偏好保存，共享吸顶导航。
+- 所有日期按 UTC 计算，每天北京时间 08:00 刷新；手动选定的日期保持固定。
+
+## 碎层修复与资料范围
+
+已同步 Invisi 上游 `e7bef51e999609d5ee65ca0a1c96a65a0142185f`（游戏版本 207032 / 2026-09-15），包含 19/44/64/94 层 Solitary Throne；其 94 层挑战模式自 2026-09-29 开放。
+
+异变表采用固定闰年日历的 0–365 索引，平年跳过 2 月 29 日；不是从固定锚点连续循环 366 天。挑战模式以关卡身份及开放日期配置，再查找当前最高层数，不再写死 95–100。
+
+这是基于社区资料的预测，不是游戏实时接口，也未在游戏客户端逐项核对。当前资料不提供 2026-09-15 以前的旧版本查询；未来规则变化后需更新。未确认的中文名称保留英文。
+
+现已使用官方 API 的 `lang=en/zh` 对照，核对 25 个碎层中文名和全部 36 项悬赏任务名，包括“孤独王座”。每项原文、ID 与链接保存在 `src/data/official-name-sources.json`；异变译名和 Boss 全名保持独立来源。
+
+```sh
+npm run names:update
+npm run names:update -- --dry-run
+npm run test:localization
+```
+
+官方 API 与 Wiki 的后续核验约定见 [DATA_SOURCES.md](docs/DATA_SOURCES.md)。Wiki 当前维护，恢复后再用于补充核对。
+
+## 更新碎层资料
+
+```sh
+npm run data:update
+# 新的上游提交必须同时指定对应游戏更新日期和 build：
+npm run data:update -- <完整上游提交SHA> <YYYY-MM-DD> <游戏build>
+# 只下载并校验，不替换本地文件：在上述命令后追加 --dry-run
+```
+
+默认通过 Git 读取上游最新提交，也可以直接传入完整提交 SHA。下载四份资料并校验全部层数、异变数量、闰年日历表及日常轮换后再替换本地文件。新关卡的挑战模式开放情况与中文名需要人工核对，配置位于 `src/data/fractals/challenge-modes.json` 和 `names-zh.json`。Windows 便携 Git 可通过 `GIT_BINARY` 环境变量指定。
+
+## 针对性验证
+
+```sh
+npm run test:domain
+npm run typecheck
+```
+
+测试覆盖本次新增和迁移涉及的日期算法、碎层资料、挑战模式开放、固定上游样例、异变反查、原有团队悬赏及 PNG 绘制模型。只验收修改及直接影响范围，不默认运行全量端到端测试。
+
+## GitHub Pages
+
+已提供 `.github/workflows/deploy.yml`：推送到 `main` 后安装依赖、构建并部署 `dist/`。仓库 `Settings → Pages → Source` 需选择 **GitHub Actions**。不要再把源码根目录直接作为静态成品发布。
+
+## 文档与来源
+
+文档索引见 [AGENTS.md](AGENTS.md)。实现研究、证据、日期算法及限制见 [碎层研究](docs/FRACTALS_RESEARCH.md)，架构见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+
+碎层资料来自 [Invisi/gw2-fotm-instabilities](https://github.com/Invisi/gw2-fotm-instabilities)，按 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) 使用；详情见 [第三方资料说明](THIRD_PARTY_NOTICES.md)。此许可针对引用的数据，不自动覆盖本项目全部代码。本项目是非官方玩家工具。

@@ -1,0 +1,761 @@
+{
+  "schemaVersion": 1,
+  "source": "https://api.guildwars2.com/v2",
+  "retrievedAt": "2026-10-25",
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "fractals": {
+    "aetherblade": {
+      "achievementId": 2948,
+      "englishAchievementName": "Daily Tier 4 Aetherblade",
+      "chineseAchievementName": "日常以太之刃4级",
+      "label": "以太之刃",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2948?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2948?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "aquatic_ruins": {
+      "achievementId": 2956,
+      "englishAchievementName": "Daily Tier 4 Aquatic Ruins",
+      "chineseAchievementName": "日常水域残迹4级",
+      "label": "水域残迹",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2956?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2956?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "captain_mai_trin_boss": {
+      "achievementId": 2932,
+      "englishAchievementName": "Daily Tier 4 Captain Mai Trin Boss",
+      "chineseAchievementName": "日常美琴船长头目4级",
+      "label": "美琴船长头目",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2932?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2932?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "chaos": {
+      "achievementId": 3038,
+      "englishAchievementName": "Daily Tier 4 Chaos",
+      "chineseAchievementName": "日常混沌4级",
+      "label": "混沌",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/3038?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/3038?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "cliffside": {
+      "achievementId": 2930,
+      "englishAchievementName": "Daily Tier 4 Cliffside",
+      "chineseAchievementName": "日常崖壁4级",
+      "label": "崖壁",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2930?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2930?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "deepstone": {
+      "achievementId": 4224,
+      "englishAchievementName": "Daily Tier 4 Deepstone",
+      "chineseAchievementName": "日常深石坑4级",
+      "label": "深石坑",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/4224?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/4224?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "kinfall": {
+      "achievementId": 8739,
+      "englishAchievementName": "Daily Tier 4 Kinfall",
+      "chineseAchievementName": "日常族亲陨落4级",
+      "label": "族亲陨落",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/8739?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/8739?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "lonely_tower": {
+      "achievementId": 7950,
+      "englishAchievementName": "Daily Tier 4 Lonely Tower",
+      "chineseAchievementName": "日常孤高尖塔4级",
+      "label": "孤高尖塔",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/7950?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/7950?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "molten_boss": {
+      "achievementId": 2966,
+      "englishAchievementName": "Daily Tier 4 Molten Boss",
+      "chineseAchievementName": "日常熔火头目4级",
+      "label": "熔火头目",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2966?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2966?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "molten_furnace": {
+      "achievementId": 2903,
+      "englishAchievementName": "Daily Tier 4 Molten Furnace",
+      "chineseAchievementName": "日常熔火熔炉4级",
+      "label": "熔火熔炉",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2903?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2903?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "nightmare": {
+      "achievementId": 3177,
+      "englishAchievementName": "Daily Tier 4 Nightmare",
+      "chineseAchievementName": "日常噩梦4级",
+      "label": "噩梦",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/3177?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/3177?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "shattered_observatory": {
+      "achievementId": 3458,
+      "englishAchievementName": "Daily Tier 4 Shattered Observatory",
+      "chineseAchievementName": "日常破碎观测台4级",
+      "label": "破碎观测台",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/3458?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/3458?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "silent_surf": {
+      "achievementId": 6935,
+      "englishAchievementName": "Daily Tier 4 Silent Surf",
+      "chineseAchievementName": "日常4级寂静之浪",
+      "label": "寂静之浪",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/6935?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/6935?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "sirens_reef": {
+      "achievementId": 4494,
+      "englishAchievementName": "Daily Tier 4 Siren's Reef",
+      "chineseAchievementName": "日常海妖暗礁4级",
+      "label": "海妖暗礁",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/4494?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/4494?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "snowblind": {
+      "achievementId": 2952,
+      "englishAchievementName": "Daily Tier 4 Snowblind",
+      "chineseAchievementName": "日常雪盲4级",
+      "label": "雪盲",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2952?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2952?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "sunqua_peak": {
+      "achievementId": 5446,
+      "englishAchievementName": "Daily Tier 4 Sunqua Peak",
+      "chineseAchievementName": "日常桑泉峰4级",
+      "label": "桑泉峰",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/5446?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/5446?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "solid_ocean": {
+      "achievementId": 2923,
+      "englishAchievementName": "Daily Tier 4 Solid Ocean",
+      "chineseAchievementName": "日常石海4级",
+      "label": "石海",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2923?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2923?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "solitary_throne": {
+      "achievementId": 9388,
+      "englishAchievementName": "Daily Tier 4 Solitary Throne",
+      "chineseAchievementName": "日常孤独王座4级",
+      "label": "孤独王座",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9388?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9388?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "swampland": {
+      "achievementId": 2892,
+      "englishAchievementName": "Daily Tier 4 Swampland",
+      "chineseAchievementName": "日常沼泽4级",
+      "label": "沼泽",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2892?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2892?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "thaumanova_reactor": {
+      "achievementId": 2967,
+      "englishAchievementName": "Daily Tier 4 Thaumanova Reactor",
+      "chineseAchievementName": "日常奇术新星反应堆4级",
+      "label": "奇术新星反应堆",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2967?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2967?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "twilight_oasis": {
+      "achievementId": 3973,
+      "englishAchievementName": "Daily Tier 4 Twilight Oasis",
+      "chineseAchievementName": "日常暮光绿洲4级",
+      "label": "暮光绿洲",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/3973?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/3973?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "uncategorized": {
+      "achievementId": 2939,
+      "englishAchievementName": "Daily Tier 4 Uncategorized",
+      "chineseAchievementName": "日常未识别4级",
+      "label": "未识别",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2939?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2939?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "underground_facility": {
+      "achievementId": 2947,
+      "englishAchievementName": "Daily Tier 4 Underground Facility",
+      "chineseAchievementName": "日常地下设施4级",
+      "label": "地下设施",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2947?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2947?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "urban_battleground": {
+      "achievementId": 2941,
+      "englishAchievementName": "Daily Tier 4 Urban Battleground",
+      "chineseAchievementName": "日常城市战场4级",
+      "label": "城市战场",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2941?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2941?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    },
+    "volcanic": {
+      "achievementId": 2989,
+      "englishAchievementName": "Daily Tier 4 Volcanic",
+      "chineseAchievementName": "日常火山4级",
+      "label": "火山",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/2989?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/2989?lang=zh",
+      "fields": [
+        "fractalName"
+      ],
+      "method": "Remove the daily/tier label from the official achievement name"
+    }
+  },
+  "raidBounties": {
+    "shiverpeaks": {
+      "achievementId": 9121,
+      "englishAchievementName": "Raid Bounty: Shiverpeaks Pass",
+      "chineseAchievementName": "大型地下城赏金：席瓦雪山小径",
+      "label": "席瓦雪山小径",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9121?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9121?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "voice-claw": {
+      "achievementId": 9175,
+      "englishAchievementName": "Raid Bounty: Voice and Claw of the Fallen",
+      "chineseAchievementName": "大型地下城赏金：亡者之音和亡者之爪",
+      "label": "亡者之音和亡者之爪",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9175?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9175?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "fraenir": {
+      "achievementId": 9139,
+      "englishAchievementName": "Raid Bounty: Fraenir of Jormag",
+      "chineseAchievementName": "大型地下城赏金：卓玛爪牙法兰涅尔",
+      "label": "卓玛爪牙法兰涅尔",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9139?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9139?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "gorseval": {
+      "achievementId": 9122,
+      "englishAchievementName": "Raid Bounty: Gorseval",
+      "chineseAchievementName": "大型地下城赏金：戈瑟瓦尔",
+      "label": "戈瑟瓦尔",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9122?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9122?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "cairn": {
+      "achievementId": 9109,
+      "englishAchievementName": "Raid Bounty: Cairn",
+      "chineseAchievementName": "大型地下城赏金：凯玲",
+      "label": "凯玲",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9109?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9109?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "mursaat": {
+      "achievementId": 9192,
+      "englishAchievementName": "Raid Bounty: Mursaat Overseer",
+      "chineseAchievementName": "大型地下城赏金：末世魔监工",
+      "label": "末世魔监工",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9192?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9192?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "aetherblade": {
+      "achievementId": 9153,
+      "englishAchievementName": "Raid Bounty: Aetherblade Hideout",
+      "chineseAchievementName": "大型地下城赏金：以太之刃藏身处",
+      "label": "以太之刃藏身处",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9153?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9153?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "sabir": {
+      "achievementId": 9127,
+      "englishAchievementName": "Raid Bounty: Cardinal Sabir",
+      "chineseAchievementName": "大型地下城赏金：基石守护者萨比尔",
+      "label": "基石守护者萨比尔",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9127?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9127?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "whisper": {
+      "achievementId": 9131,
+      "englishAchievementName": "Raid Bounty: Whisper of Jormag",
+      "chineseAchievementName": "大型地下城赏金：卓玛低语",
+      "label": "卓玛低语",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9131?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9131?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "vale": {
+      "achievementId": 9126,
+      "englishAchievementName": "Raid Bounty: Vale Guardian",
+      "chineseAchievementName": "大型地下城赏金：山谷守护者",
+      "label": "山谷守护者",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9126?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9126?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "cosmic": {
+      "achievementId": 9155,
+      "englishAchievementName": "Raid Bounty: Cosmic Observatory",
+      "chineseAchievementName": "大型地下城赏金：宇宙观测台",
+      "label": "宇宙观测台",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9155?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9155?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "coldwar": {
+      "achievementId": 9115,
+      "englishAchievementName": "Raid Bounty: Cold War",
+      "chineseAchievementName": "大型地下城赏金：冷战",
+      "label": "冷战",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9115?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9115?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "boneskinner": {
+      "achievementId": 9197,
+      "englishAchievementName": "Raid Bounty: Boneskinner",
+      "chineseAchievementName": "大型地下城赏金：骸骨剥皮怪",
+      "label": "骸骨剥皮怪",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9197?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9197?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "sabetha": {
+      "achievementId": 9185,
+      "englishAchievementName": "Raid Bounty: Sabetha",
+      "chineseAchievementName": "大型地下城赏金：萨蓓莎",
+      "label": "萨蓓莎",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9185?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9185?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "xunlai": {
+      "achievementId": 9196,
+      "englishAchievementName": "Raid Bounty: Xunlai Jade Junkyard",
+      "chineseAchievementName": "大型地下城赏金：桑莱废料场",
+      "label": "桑莱废料场",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9196?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9196?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "febe": {
+      "achievementId": 9134,
+      "englishAchievementName": "Raid Bounty: Temple of Febe",
+      "chineseAchievementName": "大型地下城赏金：菲勃神殿",
+      "label": "菲勃神殿",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9134?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9134?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "construct": {
+      "achievementId": 9163,
+      "englishAchievementName": "Raid Bounty: Keep Construct",
+      "chineseAchievementName": "大型地下城赏金：要塞构造体",
+      "label": "要塞构造体",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9163?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9163?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "kela": {
+      "achievementId": 9158,
+      "englishAchievementName": "Raid Bounty: Kela",
+      "chineseAchievementName": "大型地下城赏金：齐拉",
+      "label": "齐拉",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9158?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9158?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "slothasor": {
+      "achievementId": 9135,
+      "englishAchievementName": "Raid Bounty: Slothasor",
+      "chineseAchievementName": "大型地下城赏金：斯洛萨索",
+      "label": "斯洛萨索",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9135?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9135?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "matthias": {
+      "achievementId": 9160,
+      "englishAchievementName": "Raid Bounty: Matthias",
+      "chineseAchievementName": "大型地下城赏金：马蒂亚斯",
+      "label": "马蒂亚斯",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9160?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9160?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "xera": {
+      "achievementId": 9107,
+      "englishAchievementName": "Raid Bounty: Xera",
+      "chineseAchievementName": "大型地下城赏金：琦拉",
+      "label": "琦拉",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9107?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9107?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "samarog": {
+      "achievementId": 9103,
+      "englishAchievementName": "Raid Bounty: Samarog",
+      "chineseAchievementName": "大型地下城赏金：萨玛洛格",
+      "label": "萨玛洛格",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9103?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9103?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "amalgamate": {
+      "achievementId": 9119,
+      "englishAchievementName": "Raid Bounty: Conjured Amalgamate",
+      "chineseAchievementName": "大型地下城赏金：咒术融合体",
+      "label": "咒术融合体",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9119?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9119?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "largos": {
+      "achievementId": 9162,
+      "englishAchievementName": "Raid Bounty: Twin Largos",
+      "chineseAchievementName": "大型地下城赏金：孪生蝶翼人",
+      "label": "孪生蝶翼人",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9162?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9162?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "decima": {
+      "achievementId": 9137,
+      "englishAchievementName": "Raid Bounty: Decima",
+      "chineseAchievementName": "大型地下城赏金：迪西玛",
+      "label": "迪西玛",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9137?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9137?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "adina": {
+      "achievementId": 9145,
+      "englishAchievementName": "Raid Bounty: Cardinal Adina",
+      "chineseAchievementName": "大型地下城赏金：基石守护者艾迪娜",
+      "label": "基石守护者艾迪娜",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9145?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9145?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "olc": {
+      "achievementId": 9138,
+      "englishAchievementName": "Raid Bounty: Old Lion's Court",
+      "chineseAchievementName": "大型地下城赏金：旧雄狮广场",
+      "label": "旧雄狮广场",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9138?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9138?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "ura": {
+      "achievementId": 9189,
+      "englishAchievementName": "Raid Bounty: Ura",
+      "chineseAchievementName": "大型地下城赏金：厄拉",
+      "label": "厄拉",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9189?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9189?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "kaineng": {
+      "achievementId": 9179,
+      "englishAchievementName": "Raid Bounty: Kaineng Overlook",
+      "chineseAchievementName": "大型地下城赏金：凯宁瞭望台",
+      "label": "凯宁瞭望台",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9179?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9179?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "deimos": {
+      "achievementId": 9176,
+      "englishAchievementName": "Raid Bounty: Deimos",
+      "chineseAchievementName": "大型地下城赏金：戴莫斯",
+      "label": "戴莫斯",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9176?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9176?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "qadim": {
+      "achievementId": 9201,
+      "englishAchievementName": "Raid Bounty: Qadim",
+      "chineseAchievementName": "大型地下城赏金：卡迪姆",
+      "label": "卡迪姆",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9201?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9201?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "qtp": {
+      "achievementId": 9124,
+      "englishAchievementName": "Raid Bounty: Qadim the Peerless",
+      "chineseAchievementName": "大型地下城赏金：无可匹敌的卡迪姆",
+      "label": "无可匹敌的卡迪姆",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9124?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9124?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "soulless": {
+      "achievementId": 9146,
+      "englishAchievementName": "Raid Bounty: Soulless Horror",
+      "chineseAchievementName": "大型地下城赏金：无魂惧魔",
+      "label": "无魂惧魔",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9146?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9146?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "harvest": {
+      "achievementId": 9168,
+      "englishAchievementName": "Raid Bounty: Harvest Temple",
+      "chineseAchievementName": "大型地下城赏金：丰收神殿",
+      "label": "丰收神殿",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9168?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9168?lang=zh",
+      "fields": [
+        "bounty",
+        "instance"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "dhuum": {
+      "achievementId": 9191,
+      "englishAchievementName": "Raid Bounty: Dhuum",
+      "chineseAchievementName": "大型地下城赏金：德姆",
+      "label": "德姆",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9191?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9191?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    },
+    "greer": {
+      "achievementId": 9161,
+      "englishAchievementName": "Raid Bounty: Greer",
+      "chineseAchievementName": "大型地下城赏金：格里尔",
+      "label": "格里尔",
+      "englishUrl": "https://api.guildwars2.com/v2/achievements/9161?lang=en",
+      "chineseUrl": "https://api.guildwars2.com/v2/achievements/9161?lang=zh",
+      "fields": [
+        "bounty"
+      ],
+      "method": "Remove the bounty label; preserve the existing boss full name"
+    }
+  },
+  "unresolved": {
+    "instabilityNames": "Existing community translations; EVTC IDs are not exposed in the public skill ID list",
+    "bossFullNames": "Existing curated translations; bounty labels do not establish full NPC names"
+  }
+}
