@@ -1,4 +1,4 @@
-// Canvas drawing preserved from the original raid tool; models are supplied by TypeScript.
+// Canvas share images use localized snapshots, independent of viewport and scroll position.
 const colors = ['#c6b47d', '#9db0c1', '#9cb99b', '#c39b84'];
 const font = '"Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif';
   // English words wrap at spaces; overlong words and Chinese names wrap by Unicode character.
@@ -32,17 +32,54 @@ const font = '"Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", 
     let ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas is unavailable');
     const width = canvas.width, margin = 48, inner = width - margin * 2;
-    let layout, contentBottom;
+    let layout, contentBottom, fractalLayout, dailyHeader;
     if (model.mode === 'daily') {
+      const raidY = 211;
+      ctx.font = `600 28px ${font}`;
+      const raidTitleWidth = ctx.measureText(model.raidTitle).width;
+      ctx.font = `20px ${font}`;
+      const badgeWidth = ctx.measureText(model.raidCycle).width + 24;
+      dailyHeader = { raidY, badgeWidth, badgeX: margin + raidTitleWidth + 20, cardsTop: raidY + 52 };
       const cardWidth = (inner - 22) / 2;
       layout = model.days[0].items.map(item => {
-        ctx.font = `600 32px ${font}`;
+        ctx.font = `600 28px ${font}`;
         const boss = wrapText(ctx, item.boss, cardWidth - 56);
-        ctx.font = `23px ${font}`;
+        ctx.font = `22px ${font}`;
         const instance = wrapText(ctx, item.instance, cardWidth - 56);
-        return { item, boss, instance, height: 138 + boss.length * 43 + instance.length * 33 };
+        return { item, boss, instance, height: 92 + boss.length * 38 + instance.length * 30 };
       });
-      contentBottom = 225 + Math.max(layout[0].height, layout[1].height) + 22 + Math.max(layout[2].height, layout[3].height);
+      contentBottom = dailyHeader.cardsTop + Math.max(layout[0].height, layout[1].height) + 16 + Math.max(layout[2].height, layout[3].height);
+      if (model.fractals) {
+        const start = contentBottom + 32;
+        ctx.font = `20px ${font}`;
+        const note = wrapText(ctx, model.fractals.note, inner);
+        let y = start + 44 + note.length * 28 + 16;
+        const groups = model.fractals.sections.map(group => {
+          const top = y;
+          y += 44;
+          const rows = group.items.map(item => {
+            ctx.font = `600 24px ${font}`;
+            const name = wrapText(ctx, `${item.scale} · ${item.name}`, 354);
+            ctx.font = `18px ${font}`;
+            const meta = wrapText(ctx, [item.ar, ...item.badges].join(' · '), 354);
+            ctx.font = `20px ${font}`;
+            const instabilities = wrapText(ctx, item.instabilities.join(' / ') || item.noInstabilities, inner - 426);
+            const height = Math.max(name.length * 32 + 4 + meta.length * 25, instabilities.length * 28) + 24;
+            const row = { name, meta, instabilities, height, top: y };
+            y += height;
+            return row;
+          });
+          y += 16;
+          return { title: group.title, top, rows };
+        });
+        ctx.font = `22px ${font}`;
+        const unavailable = model.fractals.unavailable ? wrapText(ctx, model.fractals.unavailable, inner - 36) : [];
+        if (unavailable.length) y += unavailable.length * 32 + 28;
+        ctx.font = `18px ${font}`;
+        const attribution = wrapText(ctx, model.fractals.attribution, inner);
+        fractalLayout = { start, note, groups, unavailable, attribution, attributionTop: y };
+        contentBottom = y + attribution.length * 26;
+      }
     } else {
       const cellWidth = (inner - 170) / 4;
       layout = model.days.map(day => {
@@ -64,14 +101,20 @@ const font = '"Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", 
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#101715'; ctx.fillRect(0, 0, width, canvas.height);
     ctx.fillStyle = '#ccad73'; ctx.fillRect(margin, 42, 42, 3);
-    ctx.font = `600 20px ${font}`; ctx.fillText('GW2 RAID', margin + 58, 31);
+    ctx.font = `600 20px ${font}`; ctx.fillText('GW2 Daily Tools', margin + 58, 31);
     ctx.font = `600 ${model.mode === 'cycle' ? 48 : 46}px ${font}`;
     lines(ctx, [model.title], margin, 88, 58, '#f1eee2');
     ctx.font = `24px ${font}`;
     lines(ctx, [model.subtitle], margin, 158, 34, '#c9cdbb');
     if (model.mode === 'daily') {
       const cardWidth = (inner - 22) / 2;
-      let y = 225;
+      ctx.font = `600 28px ${font}`;
+      lines(ctx, [model.raidTitle], margin, dailyHeader.raidY, 38, '#edcf97');
+      ctx.fillStyle = '#ccad7312'; ctx.fillRect(dailyHeader.badgeX, dailyHeader.raidY - 2, dailyHeader.badgeWidth, 36);
+      ctx.strokeStyle = '#ccad7366'; ctx.strokeRect(dailyHeader.badgeX, dailyHeader.raidY - 2, dailyHeader.badgeWidth, 36);
+      ctx.font = `20px ${font}`;
+      lines(ctx, [model.raidCycle], dailyHeader.badgeX + 12, dailyHeader.raidY + 5, 28, '#edcf97');
+      let y = dailyHeader.cardsTop;
       for (let row = 0; row < 2; row++) {
         const pair = layout.slice(row * 2, row * 2 + 2);
         const height = Math.max(...pair.map(card => card.height));
@@ -80,13 +123,40 @@ const font = '"Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", 
           ctx.fillStyle = '#1b261e'; ctx.fillRect(x, y, cardWidth, height);
           ctx.strokeStyle = '#354036'; ctx.lineWidth = 1; ctx.strokeRect(x, y, cardWidth, height);
           ctx.fillStyle = colors[card.item.group - 1]; ctx.fillRect(x, y, cardWidth, 3);
-          ctx.font = `20px ${font}`; lines(ctx, [card.item.label], x + 28, y + 25, 28, colors[card.item.group - 1]);
-          ctx.font = `600 32px ${font}`;
-          const bossBottom = lines(ctx, card.boss, x + 28, y + 70, 43, '#f3f2e6');
-          ctx.font = `18px ${font}`; lines(ctx, [model.instanceLabel], x + 28, bossBottom + 16, 26, '#a4ada3');
-          ctx.font = `23px ${font}`; lines(ctx, card.instance, x + 28, bossBottom + 48, 33, '#d9dfd0');
+          ctx.font = `20px ${font}`; lines(ctx, [card.item.label], x + 28, y + 18, 28, colors[card.item.group - 1]);
+          ctx.font = `600 28px ${font}`;
+          const bossBottom = lines(ctx, card.boss, x + 28, y + 54, 38, '#f3f2e6');
+          ctx.font = `22px ${font}`; lines(ctx, card.instance, x + 28, bossBottom + 12, 30, '#d9dfd0');
         });
-        y += height + 22;
+        y += height + 16;
+      }
+      if (fractalLayout) {
+        ctx.font = `600 30px ${font}`;
+        lines(ctx, [model.fractals.title], margin, fractalLayout.start, 40, '#edcf97');
+        ctx.font = `20px ${font}`;
+        const noteBottom = lines(ctx, fractalLayout.note, margin, fractalLayout.start + 44, 28, '#a4ada3');
+        if (fractalLayout.unavailable.length) {
+          ctx.font = `22px ${font}`;
+          lines(ctx, fractalLayout.unavailable, margin + 18, noteBottom + 28, 32, '#d9dfd0');
+        }
+        for (const group of fractalLayout.groups) {
+          ctx.font = `600 25px ${font}`;
+          lines(ctx, [group.title], margin, group.top, 34, '#edcf97');
+          group.rows.forEach((row, index) => {
+            ctx.fillStyle = index % 2 ? '#172119' : '#1b261e';
+            ctx.fillRect(margin, row.top, inner, row.height);
+            ctx.strokeStyle = '#354036'; ctx.lineWidth = 1;
+            ctx.strokeRect(margin, row.top, inner, row.height);
+            ctx.font = `600 24px ${font}`;
+            const nameBottom = lines(ctx, row.name, margin + 18, row.top + 12, 32, '#f3f2e6');
+            ctx.font = `18px ${font}`;
+            lines(ctx, row.meta, margin + 18, nameBottom + 4, 25, '#a4ada3');
+            ctx.font = `20px ${font}`;
+            lines(ctx, row.instabilities, margin + 408, row.top + 12, 28, '#d9dfd0');
+          });
+        }
+        ctx.font = `18px ${font}`;
+        lines(ctx, fractalLayout.attribution, margin, fractalLayout.attributionTop, 26, '#a4ada3');
       }
     } else {
       const cellWidth = (inner - 170) / 4;

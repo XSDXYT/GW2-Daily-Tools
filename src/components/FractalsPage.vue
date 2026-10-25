@@ -3,9 +3,10 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from '../i18n';
 import { useClock } from '../useClock';
 import { dayNumber, dayOffset } from '../domain/dates';
-import { fractalsForDate, fractalSource, instabilityDetails, upcomingInstability, type FractalView } from '../domain/fractals';
+import { fractalsForDate, fractalSource, instabilityDetails, type FractalView } from '../domain/fractals';
 import { copyText } from '../lib/clipboard';
 import DateControls from './DateControls.vue';
+import FractalDateSearch from './FractalDateSearch.vue';
 const { t, language, dateLabel, fractalName, instabilityName } = useI18n();
 const { today, countdown, refresh } = useClock();
 const selectedDate = ref<string | null>(null);
@@ -13,12 +14,9 @@ const date = computed(() => selectedDate.value || today.value);
 const view = ref<FractalView>('cm');
 const search = ref('');
 const filterId = ref('');
-const reverseScale = ref(94);
-const reverseId = ref(0);
 const status = ref('');
 const copying = ref(false);
 const supported = computed(() => date.value >= fractalSource.validFrom);
-const cmRows = computed(() => supported.value ? fractalsForDate(date.value, 'cm') : []);
 const rows = computed(() => {
   if (!supported.value) return [];
   const query = search.value.toLocaleLowerCase();
@@ -28,10 +26,8 @@ const rows = computed(() => {
   ).sort((a, b) => a.scale - b.scale);
 });
 const options = computed(() => instabilityDetails.map((_, id) => ({ id, label: instabilityName(id) })));
-const reverseDates = computed(() => supported.value ? upcomingInstability(date.value, reverseScale.value, reverseId.value) : []);
 const copyContent = computed(() => [t('fractalCopyHeading', { date: date.value }), ...rows.value.map(row => `${row.scale} · ${fractalName(row.type)}: ${row.instabilityIds.map(instabilityName).join(' / ') || t('noInstabilities')}`)].join('\n'));
 watch([date, view, search, filterId, language], () => { status.value = ''; });
-watch(cmRows, value => { if (value.length && !value.some(row => row.scale === reverseScale.value)) reverseScale.value = value[value.length - 1].scale; });
 async function copy() { refresh(); copying.value = true; status.value = await copyText(copyContent.value) ? 'copied' : 'copyManual'; copying.value = false; }
 function shift(amount: number) {
   try { const value = dayOffset(date.value, amount); dayNumber(value); if (value >= fractalSource.validFrom) selectedDate.value = value; } catch { /* Boundaries remain on the last valid date. */ }
@@ -83,11 +79,7 @@ function shift(amount: number) {
     </div>
     <p v-else class="empty-state">{{ t('noResults') }}</p>
 
-    <section class="reverse-panel" aria-labelledby="reverse-heading">
-      <div class="reverse-heading"><h2 id="reverse-heading">{{ t('reverseTitle') }}</h2><p class="fractal-help">{{ t('reverseHelp') }}</p></div>
-      <div class="fractal-filters reverse-filters"><div><label for="reverse-scale">{{ t('reverseScale') }}</label><select id="reverse-scale" v-model.number="reverseScale" name="reverse-scale"><option v-for="row in cmRows" :key="row.scale" :value="row.scale">{{ row.scale }} · {{ fractalName(row.type) }}</option></select></div><div><label for="reverse-instability">{{ t('reverseInstability') }}</label><select id="reverse-instability" v-model.number="reverseId" name="reverse-instability"><option v-for="option in options" :key="option.id" :value="option.id">{{ option.label }}</option></select></div></div>
-      <div class="reverse-result"><p class="fractal-help" role="status">{{ reverseDates.length ? t('reverseResult', { n: reverseDates.length }) : t('reverseEmpty') }}</p><div class="reverse-dates"><button v-for="value in reverseDates" :key="value" class="language-toggle" type="button" :aria-label="t('showDate', { date: value })" @click="selectedDate = value">{{ value }}</button></div></div>
-    </section>
+    <FractalDateSearch :date="date" @select="selectedDate = $event" />
     <details class="source-details"><summary>{{ t('sourceDetails') }} · {{ t('dataVersion', { date: fractalSource.validFrom }) }}</summary><p>{{ t('predictionNote') }}</p><p>{{ t('sourceExplain') }}</p><p>{{ t('sourceFallback') }}</p><p><a :href="fractalSource.repository" target="_blank" rel="noopener noreferrer">{{ t('sourceAttribution') }}</a> · <a :href="fractalSource.licenseUrl" target="_blank" rel="noopener noreferrer">CC BY-NC 4.0</a></p><p><a href="https://api.guildwars2.com/v2/achievements/9388?lang=zh" target="_blank" rel="noopener noreferrer">{{ t('officialApiSource') }} ↗</a> · <a href="https://www.guildwars2.com/en/news/code-of-creation-concludes-visions-of-eternity-on-september-15/" target="_blank" rel="noopener noreferrer">{{ t('releaseSource') }} ↗</a></p></details>
   </section>
 </template>

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { fractalsForDate, upcomingInstability } from '../src/domain/fractals';
+import { dailyFractalsForDate, fractalsForDate, upcomingInstability } from '../src/domain/fractals';
+import { dayOffset, leapCalendarIndex } from '../src/domain/dates';
 import { translator } from '../src/i18n';
 import { validateFractalData } from '../scripts/fractal-schema.mjs';
 import fractals from '../src/data/fractals/fractals.json';
@@ -43,6 +44,29 @@ test('the same month and day retains its instability tuple across years', () => 
     [96, [9, 11, 13]], [95, [7, 0, 1]], [94, [15, 7, 10]]
   ]);
 });
+test('homepage summary preserves all CMs, T4 dailies and the three exact recommended scales', () => {
+  const dates = [
+    ...Array.from({ length: 15 }, (_, i) => dayOffset('2026-10-15', i)),
+    '2026-09-15', '2026-09-28', '2026-09-29', '2026-12-31', '2027-01-01',
+    '2027-02-28', '2027-03-01', '2028-02-28', '2028-02-29', '2028-03-01'
+  ];
+  for (const date of dates) {
+    const summary = dailyFractalsForDate(date)!;
+    assert.deepEqual(summary.challengeModes, fractalsForDate(date, 'cm'));
+    assert.deepEqual(summary.dailies, fractalsForDate(date, 'daily'));
+    assert.equal(summary.dailies.length, 3);
+    const expected = recommended.recommended[leapCalendarIndex(date) % 15].map(row => row.scale);
+    assert.deepEqual(summary.recommended.map(row => row.scale), expected, date);
+    assert.deepEqual(summary.recommended.map(row => row.instabilityIds.length), [0, 1, 2]);
+    for (const row of summary.recommended) {
+      assert.equal(row.recommended, true);
+      assert.deepEqual(row, fractalsForDate(date, `T${Math.ceil(row.scale / 25)}` as 'T1' | 'T2' | 'T3').find(item => item.scale === row.scale));
+    }
+  }
+  assert.equal(dailyFractalsForDate('2026-09-14'), null);
+  assert.throws(() => dailyFractalsForDate('not-a-date'), RangeError);
+});
+
 test('reverse lookup handles instability zero, crosses years, and validates its bounds', () => {
   const dates = upcomingInstability('2026-10-25', 94, 0);
   assert.deepEqual(dates, ['2026-10-26', '2026-11-05', '2026-11-09', '2026-11-16', '2026-11-19']);

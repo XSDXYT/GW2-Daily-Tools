@@ -2,6 +2,7 @@ import { bountiesForDate, currentCycleStart, cycleIndex } from '../domain/raids'
 import { dayNumber, dayOffset, utcToday } from '../domain/dates';
 import { translator, type Language } from '../i18n';
 import { siteSource } from './site-url';
+import { buildDailyFractalModel } from './daily-fractals';
 
 export type ShareMode = 'daily' | 'cycle';
 export function buildShareModel(mode: ShareMode, date: string, language: Language, today = utcToday()) {
@@ -13,6 +14,9 @@ export function buildShareModel(mode: ShareMode, date: string, language: Languag
   dayNumber(end);
   return {
     mode, language, start, end,
+    raidTitle: I.t('dailyRaidsHeading'),
+    raidCycle: mode === 'daily' ? I.t('cycleLabel', { n: cycleIndex(date) + 1 }) : '',
+    fractals: mode === 'daily' ? buildDailyFractalModel(date, language) : null,
     days: Array.from({ length: mode === 'cycle' ? 12 : 1 }, (_, index) => {
       const value = dayOffset(start, index);
       return {
@@ -25,7 +29,7 @@ export function buildShareModel(mode: ShareMode, date: string, language: Languag
       };
     }),
     title: I.t(mode === 'cycle' ? 'exportCycleTitle' : 'exportDailyTitle'),
-    subtitle: mode === 'cycle' ? I.t('exportCycleSubtitle', { start, end }) : I.t('exportDailySubtitle', { date, n: cycleIndex(date) + 1 }),
+    subtitle: mode === 'cycle' ? I.t('exportCycleSubtitle', { start, end }) : I.t('exportDailySubtitle', { date }),
     footer: I.t('exportFooter'), todayLabel: I.t('currentDay'), instanceLabel: I.t('instanceColumn'),
     columns: [I.t('dateColumn'), ...[1, 2, 3, 4].map(n => I.t('groupLabel', { n }))],
     source: siteSource(),
@@ -37,8 +41,16 @@ export type ShareModel = ReturnType<typeof buildShareModel>;
 
 export function dailyCopyText(date: string, language: Language, today = utcToday()): string {
   const I = translator(language);
-  return [I.t(date === today ? 'copyHeading' : 'copyHeadingSelected', { date }), ...bountiesForDate(date).flatMap((item, i) => [
+  const fractals = buildDailyFractalModel(date, language);
+  return [I.t(date === today ? 'copyHeading' : 'copyHeadingSelected', { date }), '', I.t('dailyRaidsHeading'), ...bountiesForDate(date).flatMap((item, i) => [
     I.t('copyBoss', { n: i + 1, name: I.encounter(item, 'boss') }),
     I.t('copyInstance', { name: `${item.wing == null ? '' : `W${item.wing} · `}${I.encounter(item, 'instance')}` })
-  ])].join('\n');
+  ]), '', fractals.title, fractals.note,
+  ...(fractals.unavailable ? [fractals.unavailable] : fractals.sections.flatMap(section => [
+    '', section.title,
+    ...section.items.flatMap(item => [
+      `${item.scale} · ${item.name} · ${item.ar}${item.badges.length ? ` · ${item.badges.join(' / ')}` : ''}`,
+      `   ${item.instabilities.join(' / ') || item.noInstabilities}`
+    ])
+  ])), '', fractals.attribution].join('\n');
 }

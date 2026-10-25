@@ -4,10 +4,40 @@
 .site-header { column-gap: 20px; }
 main { outline: none; }
 button:disabled { cursor: default; }
+.secondary-button { min-height: 44px; }
 input, select { font: inherit; color: var(--text); background: #1b261e; border: 1px solid var(--line); border-radius: 4px; min-height: 44px; padding: 9px 12px; min-width: 0; max-width: 100%; color-scheme: dark; }
 input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
 .date-toolbar { gap: 8px; }
 .date-toolbar input, .date-toolbar button { min-height: 44px; }
+.daily-reset { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #ccad7333; }
+.reset-remaining { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; color: var(--text); font-size: 13px; }
+.daily-reset-rule { margin: 0; color: var(--muted); font-size: 12px; }
+#countdown { padding: 5px 10px; border: 1px solid #ccad7366; border-radius: 4px; background: var(--accent-soft); color: var(--accent-bright); font-size: 24px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+.daily-reset #countdown { font-size: 30px; }
+.daily-panel { margin-top: 22px; }
+.daily-panel-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.daily-panel-heading h2 { margin: 0; font-size: 22px; line-height: 1.4; font-weight: 600; text-wrap: balance; }
+.daily-panel-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-width: 0; }
+.daily-panel-title #cycle-label { font-size: 12px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.daily-panel-heading a { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-bright); font-size: 12px; text-underline-offset: 4px; }
+.daily-panel-heading a:hover { color: var(--text); }
+.daily-panel .boss-list { margin-top: 12px; }
+.daily-panel .boss-row { min-height: 170px; padding: 16px; }
+.daily-panel .boss-name { font-size: 21px; margin-block: 12px 16px; }
+.daily-panel .boss-instance { padding-top: 10px; }
+.daily-fractal-note { color: var(--muted); margin: 8px 0 12px; font-size: 12px; }
+.daily-fractal-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.daily-fractal-group { min-width: 0; }
+.daily-fractal-cm { grid-column: 1 / -1; }
+.daily-group-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 8px; }
+.daily-group-heading h3 { color: var(--accent-bright); margin: 0; font-size: 16px; line-height: 1.5; font-weight: 600; }
+.daily-group-heading > span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.daily-fractal-row h4 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 600; overflow-wrap: anywhere; }
+.daily-fractal-row .fractal-identity { grid-template-columns: 42px minmax(0, 1fr) auto; }
+.daily-fractal-group:not(.daily-fractal-cm) .fractal-card { grid-template-columns: minmax(0, 1fr); }
+.daily-fractal-attribution { color: var(--muted); font-size: 12px; margin: 12px 0 0; }
+.daily-fractal-attribution a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 4px; }
+.daily-fractal-attribution a:hover { color: var(--accent-bright); }
 .fractal-section { margin: 18px 0 24px; }
 .fractal-summary { padding: 0 0 12px; border: 0; border-bottom: 1px solid var(--line-soft); border-radius: 0; background: none; }
 .fractal-titlebar { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 44px; }
@@ -15,6 +45,7 @@ input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px 
 .fractal-titlebar button { min-height: 44px; }
 .fractal-heading-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 4px; }
 .fractal-heading-meta .date-line, .fractal-heading-meta .reset-line { margin: 0; font-size: 12px; }
+.fractal-heading-meta .reset-line { align-items: center; gap: 10px; color: var(--text); }
 .fractal-date-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; margin-top: 12px; }
 .fractal-date-bar .date-toolbar { margin: 0; }
 .fractal-date-bar .date-toolbar label { width: auto; }
@@ -46,12 +77,41 @@ input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px 
 .instability-list li { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 28px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 3px; color: #d4dccd; background: #10171555; font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
 .instability-dot { flex: 0 0 4px; height: 4px; border: 1px solid var(--accent); transform: rotate(45deg); }
 .fractal-no-instabilities, .fractal-help { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 0; }
-.reverse-panel { display: grid; grid-template-columns: minmax(180px, .9fr) minmax(0, 1.7fr); align-items: end; gap: 12px 24px; margin-top: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 6px; background: #162019; }
-.reverse-panel h2 { margin: 0 0 4px; font-size: 17px; line-height: 1.4; }
-.reverse-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.reverse-result { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
-.reverse-dates { display: flex; flex-wrap: wrap; gap: 8px; }
-.reverse-dates button { min-height: 44px; font-variant-numeric: tabular-nums; }
+.reverse-disclosure { margin-top: 16px; border: 1px solid var(--line); border-radius: 6px; background: #162019; }
+.reverse-disclosure > summary { min-height: 56px; padding: 14px 16px; cursor: pointer; list-style: none; border-radius: 6px; }
+.reverse-disclosure > summary::-webkit-details-marker { display: none; }
+.reverse-disclosure > summary:hover { background: var(--accent-soft); }
+.reverse-disclosure > summary h2 { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; font-size: 17px; line-height: 1.5; text-wrap: balance; }
+.reverse-disclosure-action { flex: 0 0 auto; color: var(--accent-bright); font-size: 13px; font-weight: 400; }
+.reverse-disclosure[open] > summary { border-bottom: 1px solid var(--line-soft); border-radius: 6px 6px 0 0; }
+.reverse-panel { display: grid; gap: 14px; margin: 0; padding: 16px; }
+.reverse-heading, .reverse-result-heading, .reverse-day-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.reverse-heading > div, .reverse-result-heading > div, .reverse-day-heading > div { min-width: 0; flex: 1 1 240px; }
+.reverse-panel button { min-height: 44px; }
+.reverse-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.reverse-conditions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.reverse-field { display: grid; gap: 6px; min-width: 0; }
+.reverse-field > label { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.reverse-field select, .reverse-field input { width: 100%; font-size: 13px; }
+.reverse-field .date-error { margin: 0; }
+.query-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.query-chips li { min-width: 0; max-width: 100%; }
+.query-chips button { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 3px; padding: 7px 10px; background: var(--bg); color: var(--text); font-size: 12px; text-align: start; overflow-wrap: anywhere; max-width: 100%; }
+.query-chips button:hover { border-color: var(--accent); }
+.query-chips button > span { flex: 0 0 auto; color: var(--muted); font-size: 18px; }
+.include-chips button { border-color: #7a9a6888; color: #cad9bc; }
+.exclude-chips button { border-color: #ba917b88; color: #e5c7b5; }
+.reverse-result-heading { border-top: 1px solid var(--line); padding-top: 14px; }
+.reverse-range { color: var(--accent-bright); font-size: 13px; margin: 0 0 4px; font-variant-numeric: tabular-nums; }
+.reverse-results { display: grid; gap: 14px; }
+.reverse-day-heading { margin-bottom: 8px; }
+.reverse-day-heading h3 { font-size: 14px; line-height: 1.5; font-weight: 600; margin: 0; }
+.reverse-day-heading p { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+.reverse-match .fractal-identity { grid-template-columns: 42px minmax(0, 1fr) auto; }
+.reverse-match h4 { font-size: 15px; line-height: 1.4; font-weight: 600; margin: 0; overflow-wrap: anywhere; }
+.reverse-match .instability-list li.matched-instability { border-color: #a2bb87; color: #e1ebd6; }
+.reverse-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
+.reverse-pagination > span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
 .source-details { margin-top: 12px; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .source-details summary { cursor: pointer; padding-block: 10px; color: var(--accent-bright); }
 .source-details a { text-underline-offset: 3px; }
@@ -72,10 +132,14 @@ input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px 
   .fractal-query-bar { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 700px) {
+  .daily-fractal-groups { grid-template-columns: minmax(0, 1fr); }
   .fractal-card { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .reverse-panel { grid-template-columns: minmax(0, 1fr); }
+  .reverse-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 540px) {
+  .daily-reset { gap: 8px 16px; }
+  .daily-reset #countdown { font-size: 26px; }
+  .daily-panel .boss-row { min-height: 0; }
   .brand-copy strong { font-size: 17px; letter-spacing: .07em; }
   .site-header > .language-toggle { min-width: 76px; }
   .site-header .nav-link { font-size: 13px; padding-inline: 3px; }
@@ -91,6 +155,7 @@ input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px 
   .fractal-view-tabs button { flex: 1 1 calc(33.333% - 8px); padding-inline: 6px; font-size: 12px; }
   .fractal-card { padding: 10px 12px; }
   .reverse-panel { padding: 12px; }
+  .reverse-controls, .reverse-conditions { grid-template-columns: minmax(0, 1fr); }
   .fractal-date-bar .date-toolbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; }
   .fractal-date-bar .date-toolbar label { grid-column: 1; grid-row: 1; font-size: 11px; line-height: 1.4; }
   .fractal-date-bar .date-toolbar input { grid-column: 2 / -1; grid-row: 1; width: 100%; }

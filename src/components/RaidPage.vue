@@ -3,8 +3,10 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from '../i18n';
 import { useClock } from '../useClock';
 import { bountiesForDate, cycleIndex, rotationDays } from '../domain/raids';
+import { utcToday } from '../domain/dates';
 import { dailyCopyText, buildShareModel, type ShareModel, type ShareMode } from '../lib/share';
 import { copyText } from '../lib/clipboard';
+import { buildDailyFractalModel } from '../lib/daily-fractals';
 import DateControls from './DateControls.vue';
 import ShareDialog from './ShareDialog.vue';
 const props = defineProps<{ page: 'today' | 'rotation' }>();
@@ -13,14 +15,19 @@ const { today, countdown, refresh } = useClock();
 const selectedDate = ref<string | null>(null);
 const displayDate = computed(() => selectedDate.value || today.value);
 const items = computed(() => bountiesForDate(displayDate.value));
+const fractals = computed(() => buildDailyFractalModel(displayDate.value, language.value));
 const days = computed(() => rotationDays(today.value));
 const copyState = ref('');
 const copying = ref(false);
 const copyContent = computed(() => dailyCopyText(displayDate.value, language.value, today.value));
 const model = ref<ShareModel | null>(null);
-watch(displayDate, () => { copyState.value = ''; });
+watch([displayDate, language], () => { copyState.value = ''; });
 async function copy() { refresh(); copying.value = true; copyState.value = await copyText(copyContent.value) ? 'copySuccess' : 'copyFailed'; copying.value = false; }
-function share(mode: ShareMode) { refresh(); model.value = buildShareModel(mode, mode === 'daily' ? displayDate.value : today.value, language.value, today.value); }
+function share(mode: ShareMode) {
+  refresh();
+  const shareToday = utcToday();
+  model.value = buildShareModel(mode, mode === 'daily' ? selectedDate.value || shareToday : shareToday, language.value, shareToday);
+}
 function scrollToDay(index: number) {
   const prefix = matchMedia('(max-width: 780px)').matches ? 'mobile-day-' : 'rotation-day-';
   document.getElementById(prefix + index)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
@@ -31,21 +38,45 @@ function scrollToDay(index: number) {
   <section v-if="props.page === 'today'" class="today-section" aria-labelledby="today-heading">
     <div class="today-summary">
       <div class="today-heading">
-        <div><h1 id="today-heading">{{ t(displayDate === today ? 'today' : 'chosenDay') }}</h1><p class="date-line"><span>{{ dateLabel(displayDate, true) }} · UTC</span><span id="cycle-label">{{ t('cycleLabel', { n: cycleIndex(displayDate) + 1 }) }}</span></p></div>
+        <div><h1 id="today-heading">{{ t(displayDate === today ? 'today' : 'chosenDay') }}</h1><p class="date-line">{{ dateLabel(displayDate, true) }} · UTC</p></div>
         <div class="daily-actions"><button class="primary-button" type="button" :disabled="copying" @click="copy">{{ t(copying ? 'copying' : displayDate === today ? 'copy' : 'copySelected') }}</button><button class="secondary-button" type="button" @click="share('daily')">{{ t('shareDaily') }}</button></div>
       </div>
-      <p class="reset-line">{{ t('resetRule') }} · {{ t('resetRemaining') }} <span id="countdown" role="timer">{{ countdown }}</span></p>
+      <div class="daily-reset"><p class="reset-remaining"><span>{{ t('resetRemaining') }}</span><span id="countdown" role="timer" :aria-label="t('resetTimer')">{{ countdown }}</span></p><p class="daily-reset-rule">{{ t('resetRule') }}</p></div>
     </div>
     <DateControls :date="displayDate" :pinned="selectedDate !== null" @select="selectedDate = $event" @today="selectedDate = null" />
     <p v-if="copyState" class="copy-status" role="status">{{ t(copyState) }}</p>
     <div v-if="copyState === 'copyFailed'" class="copy-fallback"><label for="copy-text">{{ t('manualHelp') }}</label><textarea id="copy-text" :value="copyContent" rows="10" readonly /></div>
-    <div class="boss-list">
-      <article v-for="item in items" :key="item.id" class="boss-row" :class="`group-${item.group}`" :data-number="`0${item.group}`">
-        <span class="group-number">{{ t('groupLabel', { n: item.group }) }}</span><h2 class="boss-name">{{ name(item, 'boss') }}</h2>
-        <p class="boss-instance"><span class="instance-label">{{ t('instancePrefix') }}</span><span v-if="item.wing" class="instance-wing">W{{ item.wing }}</span>{{ name(item, 'instance') }}</p>
-      </article>
-    </div>
-    <p class="rotation-link"><a href="./rotation.html">{{ t('fullRotation') }}</a></p>
+    <section class="daily-panel" aria-labelledby="daily-raids-heading">
+      <div class="daily-panel-heading"><div class="daily-panel-title"><h2 id="daily-raids-heading">{{ t('dailyRaidsHeading') }}</h2><span id="cycle-label">{{ t('cycleLabel', { n: cycleIndex(displayDate) + 1 }) }}</span></div><a href="./rotation.html">{{ t('fullRotation') }}</a></div>
+      <div class="boss-list">
+        <article v-for="item in items" :key="item.id" class="boss-row" :class="`group-${item.group}`" :data-number="`0${item.group}`">
+          <span class="group-number">{{ t('groupLabel', { n: item.group }) }}</span><h3 class="boss-name">{{ name(item, 'boss') }}</h3>
+          <p class="boss-instance"><span class="instance-label">{{ t('instancePrefix') }}</span><span v-if="item.wing" class="instance-wing">W{{ item.wing }}</span>{{ name(item, 'instance') }}</p>
+        </article>
+      </div>
+    </section>
+    <section class="daily-panel" aria-labelledby="daily-fractals-heading">
+      <div class="daily-panel-heading"><h2 id="daily-fractals-heading">{{ fractals.title }}</h2><a href="./fractals.html">{{ t('fractalQueryLink') }}</a></div>
+      <p class="daily-fractal-note">{{ fractals.note }}</p>
+      <p v-if="fractals.unavailable" class="empty-state" role="status">{{ fractals.unavailable }}</p>
+      <div v-else class="daily-fractal-groups">
+        <section v-for="group in fractals.sections" :key="group.id" class="daily-fractal-group" :class="`daily-fractal-${group.id}`" :aria-labelledby="`daily-${group.id}-heading`">
+          <div class="daily-group-heading"><h3 :id="`daily-${group.id}-heading`">{{ group.title }}</h3><span>{{ t('resultCount', { n: group.items.length }) }}</span></div>
+          <div class="fractal-grid">
+            <article v-for="row in group.items" :key="row.scale" class="fractal-card daily-fractal-row">
+              <div class="fractal-identity">
+                <span class="fractal-scale">{{ row.scale }}</span>
+                <div class="fractal-name"><h4>{{ row.name }}</h4><p class="fractal-ar">{{ row.ar }}</p></div>
+                <div v-if="row.badges.length" class="fractal-badges"><span v-for="badge in row.badges" :key="badge">{{ badge }}</span></div>
+              </div>
+              <ul v-if="row.instabilities.length" class="instability-list"><li v-for="instability in row.instabilities" :key="instability"><span class="instability-dot" aria-hidden="true"></span>{{ instability }}</li></ul>
+              <p v-else class="fractal-no-instabilities">{{ row.noInstabilities }}</p>
+            </article>
+          </div>
+        </section>
+      </div>
+      <p class="daily-fractal-attribution"><a href="https://github.com/Invisi/gw2-fotm-instabilities" target="_blank" rel="noopener noreferrer">{{ fractals.attribution }}</a></p>
+    </section>
   </section>
 
   <template v-else>
