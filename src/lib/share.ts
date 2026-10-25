@@ -1,6 +1,7 @@
 import { bountiesForDate, currentCycleStart, cycleIndex } from '../domain/raids';
 import { dayNumber, dayOffset, utcToday } from '../domain/dates';
 import { translator, type Language } from '../i18n';
+import { siteSource } from './site-url';
 
 export type ShareMode = 'daily' | 'cycle';
 export function buildShareModel(mode: ShareMode, date: string, language: Language, today = utcToday()) {
@@ -27,7 +28,7 @@ export function buildShareModel(mode: ShareMode, date: string, language: Languag
     subtitle: mode === 'cycle' ? I.t('exportCycleSubtitle', { start, end }) : I.t('exportDailySubtitle', { date, n: cycleIndex(date) + 1 }),
     footer: I.t('exportFooter'), todayLabel: I.t('currentDay'), instanceLabel: I.t('instanceColumn'),
     columns: [I.t('dateColumn'), ...[1, 2, 3, 4].map(n => I.t('groupLabel', { n }))],
-    source: 'xsdxyt.github.io/GW2-Daily-Raids/',
+    source: siteSource(),
     alt: mode === 'cycle' ? I.t('exportAltCycle', { start, end }) : I.t('exportAltDaily', { date }),
     filename: `gw2-${mode === 'cycle' ? 'rotation' : 'daily'}-${start}${mode === 'cycle' ? `_${end}` : ''}-${language}.png`
   };

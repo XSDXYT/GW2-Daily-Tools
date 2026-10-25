@@ -12,7 +12,9 @@
     "test:domain": "node --import tsx --test tests/dates.test.ts tests/fractals.test.ts tests/raids.test.ts tests/share.test.ts",
     "data:update": "node scripts/update-fractals.mjs",
     "names:update": "node scripts/update-localization.mjs",
-    "test:localization": "node --test tests/localization.test.mjs"
+    "test:localization": "node --test tests/localization.test.mjs",
+    "test:deployment": "node --import tsx --test tests/deployment.test.ts",
+    "check:pages": "node scripts/check-pages.mjs"
   },
   "dependencies": { "vue": "^3.5.44" },
   "devDependencies": {

@@ -68,7 +68,24 @@ npm run typecheck
 
 ## GitHub Pages
 
-已提供 `.github/workflows/deploy.yml`：推送到 `main` 后安装依赖、构建并部署 `dist/`。仓库 `Settings → Pages → Source` 需选择 **GitHub Actions**。不要再把源码根目录直接作为静态成品发布。
+目标仓库：[XSDXYT/GW2-Daily-Tools](https://github.com/XSDXYT/GW2-Daily-Tools)。站点地址：<https://xsdxyt.github.io/GW2-Daily-Tools/>。
+
+1. 仓库 `Settings → Pages → Build and deployment → Source` 选择 **GitHub Actions**。
+2. 上传当前项目源码及 `.github/workflows/deploy.yml`，保留 `package.json`、`package-lock.json`、`src/`、`assets/`、三个 HTML 入口和配置文件；不上传 `node_modules/`、本机运行环境或 `dist/`。
+3. 更新 `main` 后，工作流安装依赖、构建、检查资源子路径，然后发布 `dist/`。也可在 `Actions → Deploy GW2 Daily Tools → Run workflow` 手动运行。
+4. 等工作流成功后访问站点；不要把源码根目录直接作为静态成品发布。如果线上 HTML 仍引用 `/src/main.ts`，说明线上尚未使用构建产物。
+
+资源采用相对路径，三个页面支持仓库子目录；无需把 Vite 的 base 写死为仓库名。分享图片页脚从实际访问地址获取站点目录，已移除旧仓库网址，后续改名或绑定自定义域名可自动适配。
+
+本地部署检查：
+
+```sh
+npm run test:deployment
+npm run build
+npm run check:pages
+```
+
+`check:pages` 检查三个构建入口是否使用 JavaScript 产物，以及脚本、样式、图标和 CSS 图片能否在 `/GW2-Daily-Tools/` 子路径下解析；同一检查已加入发布工作流。
 
 ## 文档与来源
 

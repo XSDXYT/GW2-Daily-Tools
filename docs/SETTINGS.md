@@ -8,3 +8,6 @@
 - Git：更新脚本支持环境变量 `GIT_BINARY` 指定 Git 可执行文件；也可通过完整提交 SHA 更新而不调用 Git。
 - 本地：`npm run dev`。生产预览：`npm run build` 后 `npm run preview`。
 - GitHub Pages：Source 选择 GitHub Actions，工作流生成并上传 `dist/`。
+- 新仓库：`https://github.com/XSDXYT/GW2-Daily-Tools`；站点 `https://xsdxyt.github.io/GW2-Daily-Tools/`。完整步骤见 README 的 GitHub Pages 小节。
+- 分享图网址：自动取当前站点目录，不需要修改仓库名或配置密钥。
+- 发布产物检查：构建后运行 `npm run check:pages`，工作流已接入。
